@@ -16,7 +16,7 @@ The objective of this project is to provide a **standardized way** to store code
 Using the command line, similar to Git, you can perform the following operations:
 - Set a folder as the location to store your "memories" (let's call it `Memories`).
 - When working on a specific project, easily select commits related to a particular functionality.
-- Run a command like `gitm save "New Functionality"`, which will create a folder inside `Memories` containing the content of the selected commits.
+- Run a command like `git memory save "New Functionality"`, which will create a folder inside `Memories` containing the content of the selected commits.
 - A new Git repository will be initialized inside `Memories/New Functionality`, capturing all the files involved in the commits.
 - The folder will also include an `index.html` file to navigate through the commit changes and visualize the step-by-step creation of the functionality, in the original order.
 
