@@ -1,43 +1,59 @@
 ﻿using GitMemory.Domain.Service;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GitMemory.Domain.UI;
 
 namespace GitMemory.Infrastructure.Services
 {
     public class SetRepoCommandService : ISetRepoCommandService
     {
-        public Task ExecuteCommand(List<string> commands)
+        /// <summary>
+        /// Commands expected:
+        /// 1) set-repo .  
+        /// 2) set-repo <full-path>
+        /// </summary>
+        /// <param name="commands"> expects 1 argument for the set-repo command </param>
+        /// <returns>Always the completion of the tasks. All errors are displayed to the terminal</returns>
+        public Task<CommandResponse> ExecuteCommand(List<string> commands)
         {
-            if (commands == null) throw new ArgumentNullException(nameof(commands));
-            if (commands.Count == 0) throw new ArgumentException("No arguments provided.");
-            if (commands.First().Equals("."))
+            try
             {
-                var directory = Directory.GetCurrentDirectory();
-                if (directory != null && Directory.Exists(directory)) 
+                if (commands == null || commands.Count == 0)
+                    return Task.FromResult(new CommandResponse("No arguments provided.", ResponseType.Error));
+                string directory = "";
+                if (commands.First().Equals("."))
+                    directory = Directory.GetCurrentDirectory();
+                else
+                    directory = commands.First();
+                if (directory != null && Directory.Exists(directory))
                 {
                     var directoryInfo = CreateFolder(directory);
                     if (directoryInfo != null)
-                        CreateJson(directoryInfo.FullName);
+                    {
+                        HideFolder(directoryInfo.FullName);
+                        var jsonFile = CreateJson(directoryInfo.FullName);
+                        return Task.FromResult(new CommandResponse($"Folder created successfully."));
+                    }
+                    else
+                        return Task.FromResult(new CommandResponse($"Error creating/reading directory in {directory}", ResponseType.Error));                    
                 }
                 else
-                    throw new Exception("Directory not found.");
+                    return Task.FromResult(new CommandResponse("Directory not found.", ResponseType.Error));                
             }
-            return Task.CompletedTask;
+            catch (Exception ex)
+            {
+                return Task.FromResult(new CommandResponse(ex.Message, ResponseType.Error));                
+            }
         }
 
-        private void CreateJson(string folder)
+        private FileInfo CreateJson(string folder)
         {
             try
             {
                 var filePath = String.Concat(folder, "\\git-memory.json");
                 if (!File.Exists(filePath))
-                    File.Create(filePath).Close();               
+                    File.Create(filePath).Close();
+                return new FileInfo(filePath);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception($"Error creating file in git-memory.json in {folder}");
             }
@@ -48,12 +64,20 @@ namespace GitMemory.Infrastructure.Services
             try
             {
                 string gitMemoryFolder = string.Concat(folderPath, "\\.gitmemory");
-                return Directory.CreateDirectory(gitMemoryFolder);
+                if (!Directory.Exists(gitMemoryFolder))
+                    return Directory.CreateDirectory(gitMemoryFolder);
+                return new DirectoryInfo(gitMemoryFolder);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception($"Error creating directory in {folderPath}");
             }
+        }
+
+        private void HideFolder(string folderPath)
+        {
+            FileAttributes attributes = File.GetAttributes(folderPath);
+            File.SetAttributes(folderPath, attributes | FileAttributes.Hidden);
         }
     }
 }

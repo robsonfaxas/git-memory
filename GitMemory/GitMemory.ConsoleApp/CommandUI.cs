@@ -2,11 +2,6 @@
 using GitMemory.Application.Interfaces;
 using GitMemory.Domain.UI;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GitMemory.ConsoleApp
 {
@@ -21,10 +16,15 @@ namespace GitMemory.ConsoleApp
 
         public async Task Run()
         {
-            //var input = Console.ReadLine();
-            await _mediator.Send(ParseRequest());
-            foreach (var arg in Args)
-                Console.WriteLine(arg);
+            try
+            {
+                var commandResponse = await _mediator.Send(ParseRequest());
+                LogHelper.Log(commandResponse);
+            }
+            catch (ArgumentException ex) 
+            {
+                LogHelper.Log(new CommandResponse(ex.Message, ResponseType.Error));
+            }            
         }
 
         private IGitCommandRequest ParseRequest()

@@ -1,15 +1,11 @@
 ﻿using GitMemory.Application.Commands;
 using GitMemory.Domain.Service;
+using GitMemory.Domain.UI;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GitMemory.Application.Handlers
 {
-    public class SetRepoCommandHandler : IRequestHandler<SetRepoCommand>
+    public class SetRepoCommandHandler : IRequestHandler<SetRepoCommand, CommandResponse>
     {
         private readonly ISetRepoCommandService _setRepoCommandService;
 
@@ -18,9 +14,9 @@ namespace GitMemory.Application.Handlers
             _setRepoCommandService = commandService;
         }
 
-        public async Task Handle(SetRepoCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(SetRepoCommand request, CancellationToken cancellationToken)
         {
-            await _setRepoCommandService.ExecuteCommand(request.Commands);
+            return await _setRepoCommandService.ExecuteCommand(request.Commands);
         }
     }
 }

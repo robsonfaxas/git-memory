@@ -1,7 +1,6 @@
 ﻿using GitMemory.ConsoleApp;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using Microsoft.Extensions.Hosting;
 using GitMemory.Application.Configuration;
 using GitMemory.Domain.UI;
@@ -18,7 +17,7 @@ class Program
             .ConfigureServices((hostContext, services) =>
             {
                 services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
-                services.AddScoped<ICommandUI, CommandUI>();
+                services.AddScoped<ICommandUI, CommandUI>();                
                 services.AddApplicationServices();                
             })
             .Build();
@@ -26,8 +25,7 @@ class Program
         var serviceProvider = host.Services;
 
         var app = new CommandUI(serviceProvider.GetRequiredService<IMediator>());
-        //app.Args = args.ToList();
-        app.Args = new List<string>() { "set-repo", "." };
+        app.Args = args.ToList();        
         await app.Run();
     }
 }

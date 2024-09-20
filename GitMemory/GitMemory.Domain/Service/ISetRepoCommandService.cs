@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GitMemory.Domain.UI;
 
 namespace GitMemory.Domain.Service
 {
     public interface ISetRepoCommandService
     {
-        Task ExecuteCommand(List<string> commands);
+        Task<CommandResponse> ExecuteCommand(List<string> commands);
     }
 }
