@@ -1,4 +1,4 @@
-﻿using GitMemory.Domain.UI;
+﻿using GitMemory.Domain.Entities;
 
 namespace GitMemory.Domain.Service
 {

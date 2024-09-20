@@ -10,9 +10,6 @@ class Program
 
     static async Task Main(string[] args)
     {
-        var services = new ServiceCollection();
-        
-
         var host = Host.CreateDefaultBuilder()
             .ConfigureServices((hostContext, services) =>
             {
@@ -24,8 +21,9 @@ class Program
 
         var serviceProvider = host.Services;
 
-        var app = new CommandUI(serviceProvider.GetRequiredService<IMediator>());
-        app.Args = args.ToList();        
+        var app = new CommandUI(serviceProvider.GetRequiredService<IMediator>(), new LogHelper());
+        //app.Args = args.ToList();
+        app.Args = new List<string>() { "set-repo", "C:\\Repos\\git-memory\\test" };
         await app.Run();
     }
 }

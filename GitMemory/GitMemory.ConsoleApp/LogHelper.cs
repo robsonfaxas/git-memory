@@ -1,20 +1,22 @@
-﻿using GitMemory.Domain.UI;
+﻿using GitMemory.Domain.Entities;
+using GitMemory.Domain.Entities.Enums;
+using GitMemory.Domain.UI;
 
 namespace GitMemory.ConsoleApp
 {
-    public static class LogHelper
+    public class LogHelper : IInteractionWindow
     {
-        public static void Log(CommandResponse command)
+        public void WriteInfo(CommandResponse command)
         {
             switch (command.ResponseType)
             {
-                case ResponseType.Info:
+                case ResponseTypeEnum.Info:
                     LogSuccess(command.Message);
                     break;
-                case ResponseType.Warning:
+                case ResponseTypeEnum.Warning:
                     LogWarning(command.Message);
                     break;
-                case ResponseType.Error:
+                case ResponseTypeEnum.Error:
                     LogError(command.Message);
                     break;
                 default: 
@@ -43,6 +45,11 @@ namespace GitMemory.ConsoleApp
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Error.WriteLine(message);
             Console.ResetColor();
+        }
+
+        public string ReadInfo()
+        {
+            return Console.ReadLine() ?? "";
         }
     }
 }
