@@ -3,8 +3,8 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Microsoft.Extensions.Hosting;
-using GitMemory.Domain.Interfaces;
 using GitMemory.Application.Configuration;
+using GitMemory.Domain.UI;
 
 class Program
 {
@@ -26,6 +26,8 @@ class Program
         var serviceProvider = host.Services;
 
         var app = new CommandUI(serviceProvider.GetRequiredService<IMediator>());
+        //app.Args = args.ToList();
+        app.Args = new List<string>() { "set-repo", "." };
         await app.Run();
     }
 }

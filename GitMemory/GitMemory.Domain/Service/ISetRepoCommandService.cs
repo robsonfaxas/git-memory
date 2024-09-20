@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GitMemory.Domain.Interfaces
+namespace GitMemory.Domain.Service
 {
-    public interface ICommandService
+    public interface ISetRepoCommandService
     {
-        Task ExecuteCommand(string command);
+        Task ExecuteCommand(List<string> commands);
     }
 }

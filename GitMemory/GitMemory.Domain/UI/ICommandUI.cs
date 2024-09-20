@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GitMemory.Domain.Interfaces
+namespace GitMemory.Domain.UI
 {
     public interface ICommandUI
     {
