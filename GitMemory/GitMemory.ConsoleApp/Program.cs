@@ -1,2 +1,29 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using GitMemory.ConsoleApp;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using GitMemory.Application.Configuration;
+using GitMemory.Domain.UI;
+
+class Program
+{
+
+    static async Task Main(string[] args)
+    {
+        var host = Host.CreateDefaultBuilder()
+            .ConfigureServices((hostContext, services) =>
+            {
+                services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+                services.AddScoped<ICommandUI, CommandUI>();                
+                services.AddApplicationServices();                
+            })
+            .Build();
+
+        var serviceProvider = host.Services;
+
+        var app = new CommandUI(serviceProvider.GetRequiredService<IMediator>(), new LogHelper());
+        //app.Args = args.ToList();
+        app.Args = new List<string>() { "set-repo", "C:\\Repos\\git-memory\\test" };
+        await app.Run();
+    }
+}
