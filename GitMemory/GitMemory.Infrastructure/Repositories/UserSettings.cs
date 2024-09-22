@@ -1,4 +1,4 @@
-﻿using GitMemory.Domain.Service;
+﻿using GitMemory.Domain.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace GitMemory.Infrastructure.Services
 {
-    public class RepositorySettingsService : IRepositorySettingsService
+    public class UserSettings : IUserSettings
     {
-        public FileInfo CreateRepositorySettingsJson(string folder)
+        public FileInfo CreateUserSettingsJson(string folder)
         {
             try
             {
@@ -24,7 +24,7 @@ namespace GitMemory.Infrastructure.Services
             }
         }
 
-        public DirectoryInfo CreateRepositorySettingsFolder(string folderPath)
+        public DirectoryInfo CreateUserSettingsFolder(string folderPath)
         {
             try
             {

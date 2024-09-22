@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GitMemory.Domain.Service
+namespace GitMemory.Domain.Repositories
 {
-    public interface IGlobalSettingsService
+    public interface IGitMemoryGlobalSettings
     {
         FileInfo CreateGlobalSettingsJson();
         string GetGlobalSettingsFilePath();

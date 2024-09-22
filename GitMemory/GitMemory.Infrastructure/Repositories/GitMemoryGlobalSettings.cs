@@ -1,6 +1,6 @@
 ﻿using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
-using GitMemory.Domain.Service;
+using GitMemory.Domain.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GitMemory.Infrastructure.Services
 {
-    public class GlobalSettingsService : IGlobalSettingsService
+    public class GitMemoryGlobalSettings : IGitMemoryGlobalSettings
     {
         public FileInfo CreateGlobalSettingsJson()
         {
@@ -26,9 +26,9 @@ namespace GitMemory.Infrastructure.Services
             }
         }
 
-        public GlobalSettings ReadGlobalSettings()
+        public Domain.Entities.GlobalSettings ReadGlobalSettings()
         {
-            return new GlobalSettings()
+            return new Domain.Entities.GlobalSettings()
             {
                 ConfigurationFileLocation = ReadValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ConfigurationFileLocationItemKey) ?? "",
                 RepositoryLocation = ReadValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ConfigurationFileLocationItemKey) ?? ""
