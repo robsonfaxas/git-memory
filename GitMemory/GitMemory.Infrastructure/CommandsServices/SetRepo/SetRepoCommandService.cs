@@ -1,9 +1,9 @@
 ﻿using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
 using GitMemory.Domain.Repositories;
-using GitMemory.Domain.Service;
+using GitMemory.Domain.Service.SetRepo;
 
-namespace GitMemory.Infrastructure.Services
+namespace GitMemory.Infrastructure.CommandsServices.SetRepo
 {
     public class SetRepoCommandService : ISetRepoCommandService
     {
@@ -46,14 +46,14 @@ namespace GitMemory.Infrastructure.Services
                         return Task.FromResult(new CommandResponse($"Folder created successfully."));
                     }
                     else
-                        return Task.FromResult(new CommandResponse($"Error creating/reading directory in {repositoryFolder}", ResponseTypeEnum.Error));                    
+                        return Task.FromResult(new CommandResponse($"Error creating/reading directory in {repositoryFolder}", ResponseTypeEnum.Error));
                 }
                 else
-                    return Task.FromResult(new CommandResponse("Directory not found.", ResponseTypeEnum.Error));                
+                    return Task.FromResult(new CommandResponse("Directory not found.", ResponseTypeEnum.Error));
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new CommandResponse(ex.Message, ResponseTypeEnum.Error));                
+                return Task.FromResult(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
             }
         }
     }

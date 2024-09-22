@@ -3,6 +3,7 @@ using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
 using GitMemory.Domain.Repositories;
 using GitMemory.Domain.Service;
+using GitMemory.Domain.Service.Pick;
 using GitMemory.Infrastructure.Services;
 using LibGit2Sharp;
 using MediatR;

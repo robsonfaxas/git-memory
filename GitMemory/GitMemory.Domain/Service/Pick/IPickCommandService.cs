@@ -1,6 +1,6 @@
 ﻿using GitMemory.Domain.Entities;
 
-namespace GitMemory.Domain.Service
+namespace GitMemory.Domain.Service.Pick
 {
     public interface IPickCommandService
     {

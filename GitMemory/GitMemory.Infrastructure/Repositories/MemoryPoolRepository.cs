@@ -27,7 +27,10 @@ namespace GitMemory.Infrastructure.Repositories
                 }
 
                 string jsonContent = File.ReadAllText(_filePath);
-                return JsonSerializer.Deserialize<MemoryPool>(jsonContent);
+                if (jsonContent == null || string.IsNullOrEmpty(jsonContent))
+                    return null;
+                else 
+                    return JsonSerializer.Deserialize<MemoryPool>(jsonContent);
             }
             catch (Exception)
             {

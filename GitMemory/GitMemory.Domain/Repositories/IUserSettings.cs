@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GitMemory.Domain.Repositories
 {
-    public interface IUserSettingsRepository
+    public interface IUserSettings
     {
         FileInfo CreateUserSettingsJson(string folder);
         DirectoryInfo CreateUserSettingsFolder(string folderPath);
