@@ -1,14 +1,15 @@
 ﻿using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
+using GitMemory.Domain.Repositories;
 using GitMemory.Domain.Service;
 
 namespace GitMemory.Infrastructure.Services
 {
     public class SetRepoCommandService : ISetRepoCommandService
     {
-        private readonly IGlobalSettingsService _globalSettingsService;
-        private readonly IRepositorySettingsService _repositorySettingsService;
-        public SetRepoCommandService(IGlobalSettingsService globalSettingsService, IRepositorySettingsService repositorySettingsService)
+        private readonly IGitMemoryGlobalSettings _globalSettingsService;
+        private readonly IUserSettings _repositorySettingsService;
+        public SetRepoCommandService(IGitMemoryGlobalSettings globalSettingsService, IUserSettings repositorySettingsService)
         {
             _globalSettingsService = globalSettingsService;
             _repositorySettingsService = repositorySettingsService;
@@ -34,11 +35,11 @@ namespace GitMemory.Infrastructure.Services
                     repositoryFolder = commands.First();
                 if (repositoryFolder != null && Directory.Exists(repositoryFolder))
                 {
-                    var settingsDirectoryInnerFolder = _repositorySettingsService.CreateRepositorySettingsFolder(repositoryFolder);
+                    var settingsDirectoryInnerFolder = _repositorySettingsService.CreateUserSettingsFolder(repositoryFolder);
                     if (settingsDirectoryInnerFolder != null)
                     {
                         _repositorySettingsService.HideFile(settingsDirectoryInnerFolder.FullName);
-                        var configurationJsonFile = _repositorySettingsService.CreateRepositorySettingsJson(settingsDirectoryInnerFolder.FullName);
+                        var configurationJsonFile = _repositorySettingsService.CreateUserSettingsJson(settingsDirectoryInnerFolder.FullName);
                         _globalSettingsService.CreateGlobalSettingsJson();
                         _globalSettingsService.WriteValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.RepositoryLocationItemKey, repositoryFolder, "");
                         _globalSettingsService.WriteValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ConfigurationFileLocationItemKey, configurationJsonFile.FullName, "");

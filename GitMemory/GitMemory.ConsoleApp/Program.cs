@@ -23,7 +23,7 @@ class Program
 
         var app = new CommandUI(serviceProvider.GetRequiredService<IMediator>(), new LogHelper());
         //app.Args = args.ToList();
-        app.Args = new List<string>() { "set-repo", "C:\\Repos\\git-memory\\test" };
+        app.Args = new List<string>() { "pick", "C:\\Repos\\git-memory\\test" };
         await app.Run();
     }
 }

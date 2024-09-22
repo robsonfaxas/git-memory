@@ -9,7 +9,7 @@ namespace GitMemory.Domain.UI
 {
     public interface IInteractionWindow
     {
-        void WriteInfo(CommandResponse command);
-        string ReadInfo();
+        void Write(CommandResponse command);
+        string Read();
     }
 }

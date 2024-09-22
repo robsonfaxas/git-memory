@@ -6,7 +6,7 @@ namespace GitMemory.ConsoleApp
 {
     public class LogHelper : IInteractionWindow
     {
-        public void WriteInfo(CommandResponse command)
+        public void Write(CommandResponse command)
         {
             switch (command.ResponseType)
             {
@@ -47,7 +47,7 @@ namespace GitMemory.ConsoleApp
             Console.ResetColor();
         }
 
-        public string ReadInfo()
+        public string Read()
         {
             return Console.ReadLine() ?? "";
         }

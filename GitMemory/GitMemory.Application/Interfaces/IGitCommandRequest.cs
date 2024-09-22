@@ -6,7 +6,7 @@ namespace GitMemory.Application.Interfaces
 {
     public interface IGitCommandRequest : IRequest<CommandResponse>
     {
-        List<string> Commands { get; set; }
+        List<string> Parameters { get; set; }
         IInteractionWindow InteractionWindow { get; set; }
     }
 }

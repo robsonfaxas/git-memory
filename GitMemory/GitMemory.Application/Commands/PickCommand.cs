@@ -3,14 +3,14 @@ using GitMemory.Domain.UI;
 
 namespace GitMemory.Application.Commands
 {
-    public class SetRepoCommand : IGitCommandRequest
+    public class PickCommand : IGitCommandRequest
     {
         public List<string> Parameters { get; set; }
         public IInteractionWindow InteractionWindow { get; set; }
 
-        public SetRepoCommand(List<string> commands, IInteractionWindow logger)
+        public PickCommand(List<string> parameters, IInteractionWindow logger)
         {
-            Parameters = commands;
+            Parameters = parameters;
             InteractionWindow = logger;
         }
     }

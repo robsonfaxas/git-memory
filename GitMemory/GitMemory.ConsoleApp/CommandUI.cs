@@ -10,12 +10,12 @@ namespace GitMemory.ConsoleApp
     public class CommandUI : ICommandUI
     {
         private readonly IMediator _mediator;
-        private readonly IInteractionWindow _logger;
+        private readonly IInteractionWindow _interactionWindow;
         public List<string> Args { get; set; } = new List<string>();
-        public CommandUI(IMediator mediator, IInteractionWindow logger)
+        public CommandUI(IMediator mediator, IInteractionWindow interactionWindow)
         {
             _mediator = mediator;
-            _logger = logger;
+            _interactionWindow = interactionWindow;
         }
 
         public async Task Run()
@@ -23,11 +23,11 @@ namespace GitMemory.ConsoleApp
             try
             {
                 var commandResponse = await _mediator.Send(ParseRequest());
-                _logger.WriteInfo(commandResponse);
+                _interactionWindow.Write(commandResponse);
             }
             catch (ArgumentException ex) 
             {
-                _logger.WriteInfo(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
+                _interactionWindow.Write(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
             }            
         }
 
@@ -36,7 +36,9 @@ namespace GitMemory.ConsoleApp
             if (Args.Count > 1)
             {
                 if (Args.First().ToLower().Equals("set-repo"))
-                    return new SetRepoCommand(Args.Skip(1).ToList(), _logger);
+                    return new SetRepoCommand(Args.Skip(1).ToList(), _interactionWindow);
+                if (Args.First().ToLower().Equals("pick"))
+                    return new PickCommand(Args.Skip(1).ToList(), _interactionWindow);
                 else
                     throw new ArgumentException("Invalid command.");
             }
