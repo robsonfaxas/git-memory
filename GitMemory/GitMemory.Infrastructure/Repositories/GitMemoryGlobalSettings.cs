@@ -11,6 +11,12 @@ namespace GitMemory.Infrastructure.Services
 {
     public class GitMemoryGlobalSettings : IGitMemoryGlobalSettings
     {
+        public string FileName { get; set; } = ".git-memoryconfig";
+        public GitMemoryGlobalSettings()
+        {
+
+        }
+
         public FileInfo CreateGlobalSettingsJson()
         {
             try
@@ -22,7 +28,7 @@ namespace GitMemory.Infrastructure.Services
             }
             catch (Exception)
             {
-                throw new Exception($"Error creating .git-memoryconfig file");
+                throw new Exception($"Error creating {FileName} file");
             }
         }
 
@@ -31,14 +37,15 @@ namespace GitMemory.Infrastructure.Services
             return new Domain.Entities.GlobalSettings()
             {
                 ConfigurationFileLocation = ReadValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ConfigurationFileLocationItemKey) ?? "",
-                RepositoryLocation = ReadValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ConfigurationFileLocationItemKey) ?? ""
+                RepositoryLocation = ReadValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.RepositoryLocationItemKey) ?? "",
+                IsErrorLogsEnabled = ReadValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ErrorLogItemKey)?.ToUpper() == "TRUE"
             };
         }
 
         public string GetGlobalSettingsFilePath()
         {
             string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            return String.Concat(userFolder, "\\.git-memoryconfig");
+            return String.Concat(userFolder, $"\\{FileName}");
         }
 
         public string? ReadValue(string section, string property)
@@ -74,6 +81,8 @@ namespace GitMemory.Infrastructure.Services
             try
             {
                 var filePath = GetGlobalSettingsFilePath();
+                if (!File.Exists(filePath))
+                    _ = CreateGlobalSettingsJson();
                 value ??= defaultValue;
                 List<string> lines = new List<string>(File.Exists(filePath) ? File.ReadAllLines(filePath) : new string[0]);
 
@@ -92,7 +101,7 @@ namespace GitMemory.Infrastructure.Services
 
                     if (sectionFound && line.StartsWith($"{property}=", StringComparison.OrdinalIgnoreCase))
                     {
-                        lines[i] = $"{property} = {value}";
+                        lines[i] = $"{property}={value}";
                         propertyFound = true;
                         break;
                     }

@@ -20,6 +20,8 @@ namespace GitMemory.Domain.Repositories
 
         // user settings
         FileInfo CreateUserSettingsJson(string folder);
-        DirectoryInfo CreateUserSettingsFolder(string folderPath);        
+        DirectoryInfo CreateUserSettingsFolder(string folderPath);
+        Task<CommandResponse> EnableErrorLogs();
+        Task<CommandResponse> DisableErrorLogs();
     }
 }

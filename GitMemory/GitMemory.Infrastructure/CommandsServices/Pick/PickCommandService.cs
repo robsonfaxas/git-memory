@@ -9,10 +9,12 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick
     public class PickCommandService : IPickCommandService
     {
         private readonly IMemoryPoolRepository _memoryPoolRepository;
+        private readonly IErrorLogRepository _errorLogRepository;
         private IPickStrategy _pickStrategy = null!;
-        public PickCommandService(IMemoryPoolRepository memoryPoolRepository)
+        public PickCommandService(IMemoryPoolRepository memoryPoolRepository, IErrorLogRepository errorLogRepository)
         {
             _memoryPoolRepository = memoryPoolRepository;
+            _errorLogRepository = errorLogRepository;
         }
 
         public Task<CommandResponse> ExecuteCommand(List<string> commands, bool clearPoolList)
@@ -25,7 +27,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick
                 if (clearPoolList)
                     memoryPool = ClearPoolList(memoryPool);
                 var isInteger = int.TryParse(commands.FirstOrDefault(), out int result);
-                _pickStrategy = isInteger ? new PickByNumber(_memoryPoolRepository) : new PickByList(_memoryPoolRepository);
+                _pickStrategy = isInteger ? new PickByNumber(_memoryPoolRepository, _errorLogRepository) : new PickByList(_memoryPoolRepository, _errorLogRepository);
                 return _pickStrategy.Execute(commands, memoryPool);
             }
             catch (Exception ex)

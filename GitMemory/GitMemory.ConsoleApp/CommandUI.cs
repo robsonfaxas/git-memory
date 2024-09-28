@@ -39,6 +39,8 @@ namespace GitMemory.ConsoleApp
                     return new SetRepoCommand(Args.Skip(1).ToList(), _interactionWindow);
                 if (Args.First().ToLower().Equals("pick"))
                     return new PickCommand(Args.Skip(1).ToList(), _interactionWindow);
+                if (Args.First().ToLower().Equals("errorlog"))
+                    return new ErrorLogCommand(Args.Skip(1).ToList(), _interactionWindow);
                 else
                     throw new ArgumentException("Invalid command.");
             }

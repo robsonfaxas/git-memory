@@ -23,7 +23,7 @@ class Program
 
         var app = new CommandUI(serviceProvider.GetRequiredService<IMediator>(), new UserInteraction());
         //app.Args = args.ToList();
-        app.Args = new List<string>() { "pick", "C:\\Repos\\git-memory\\test" };
+        app.Args = new List<string>() { "pick", "AKSJDLKADSKLAMDKLAMD" };
         await app.Run();
     }
 }

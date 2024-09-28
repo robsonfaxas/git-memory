@@ -12,9 +12,13 @@ namespace GitMemory.Infrastructure.Repositories
     public class MemoryPoolRepository : IMemoryPoolRepository
     {
         private readonly string _filePath;
-        public MemoryPoolRepository(IGitMemoryGlobalSettings globalSettings)
+        private readonly IErrorLogRepository _errorLogRepository;
+        public string FileName { get; set; } = string.Empty;
+        public MemoryPoolRepository(IGitMemoryGlobalSettings globalSettings, IErrorLogRepository errorLogRepository)
         {
-            _filePath = globalSettings.ReadGlobalSettings().RepositoryLocation;
+            FileName = String.IsNullOrEmpty(FileName)? "git-memory.json" : FileName;
+            _filePath = $"{globalSettings.ReadGlobalSettings().RepositoryLocation}\\.gitmemory\\{FileName}";
+            _errorLogRepository = errorLogRepository;
         }
 
         public MemoryPool? ReadMemoryPool()
@@ -32,8 +36,9 @@ namespace GitMemory.Infrastructure.Repositories
                 else 
                     return JsonSerializer.Deserialize<MemoryPool>(jsonContent);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _errorLogRepository.Log(ex);
                 throw new Exception("Unable to read git-memory.json");
             }
         }
@@ -55,8 +60,9 @@ namespace GitMemory.Infrastructure.Repositories
                 string jsonContent = JsonSerializer.Serialize(memoryPool, options);
                 File.WriteAllText(_filePath, jsonContent);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _errorLogRepository.Log(ex);
                 throw new Exception("Unable to read git-memory.json");
             }
         }

@@ -21,6 +21,7 @@ namespace GitMemory.Application.Configuration
         {
             services.AddScoped<IRequestHandler<SetRepoCommand, CommandResponse>, SetRepoCommandHandler>();
             services.AddScoped<IRequestHandler<PickCommand, CommandResponse>, PickCommandHandler>();
+            services.AddScoped<IRequestHandler<ErrorLogCommand, CommandResponse>, ErrorLogCommandHandler>();
             services.AddScoped<IPickCommandService, PickCommandService>();
             services.AddScoped<ISetRepoCommandService, SetRepoCommandService>();
             services.AddScoped<IGitMemoryGlobalSettings, GitMemoryGlobalSettings>();
@@ -28,6 +29,9 @@ namespace GitMemory.Application.Configuration
             services.AddScoped<ISettingsService, SettingsService>();
             services.AddScoped<IMemoryPoolService, MemoryPoolService>();
             services.AddScoped<IMemoryPoolRepository, MemoryPoolRepository>();
+            services.AddScoped<IErrorLogRepository, ErrorLogRepository>();
+            services.AddScoped<IErrorLogService, ErrorLogService>();
+
             return services;
         }
     }

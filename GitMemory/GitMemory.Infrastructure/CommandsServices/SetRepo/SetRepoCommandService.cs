@@ -43,6 +43,7 @@ namespace GitMemory.Infrastructure.CommandsServices.SetRepo
                         _globalSettingsService.CreateGlobalSettingsJson();
                         _globalSettingsService.WriteValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.RepositoryLocationItemKey, repositoryFolder, "");
                         _globalSettingsService.WriteValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ConfigurationFileLocationItemKey, configurationJsonFile.FullName, "");
+                        _globalSettingsService.WriteValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ErrorLogItemKey, "FALSE", "");
                         return Task.FromResult(new CommandResponse($"Folder created successfully."));
                     }
                     else

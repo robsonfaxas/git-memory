@@ -6,5 +6,6 @@ namespace GitMemory.Domain.Repositories
     {
         MemoryPool? ReadMemoryPool();
         void WriteMemoryPool(MemoryPool memoryPool);
+        string FileName { get; set; }
     }
 }

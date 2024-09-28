@@ -9,9 +9,11 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
     internal class PickByList : IPickStrategy
     {
         private readonly IMemoryPoolRepository _memoryPoolRepository;
-        public PickByList(IMemoryPoolRepository memoryPoolRepository)
+        private readonly IErrorLogRepository _errorLogRepository;
+        public PickByList(IMemoryPoolRepository memoryPoolRepository, IErrorLogRepository errorLogRepository)
         {
             _memoryPoolRepository = memoryPoolRepository;
+            _errorLogRepository = errorLogRepository;
         }
         // <hash> <hash>: read all the hashes, one by one, and check if they're valid commits. 
         //                if any of them are not valid, return an error with the wrong hash
@@ -28,7 +30,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
                 {
                     var commit = GetCommit(hash);
                     if (commit == null)
-                        throw new Exception($"Invalid hash: {hash}");
+                        throw new ArgumentException($"Invalid hash: {hash}");
                     else
                         commits.Add(commit);
                 }
@@ -48,9 +50,14 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
                 _memoryPoolRepository.WriteMemoryPool(memoryPool);
                 return Task.FromResult(new CommandResponse("Commits added.", ResponseTypeEnum.Info));
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 return Task.FromResult(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Log(ex);
+                return Task.FromResult(new CommandResponse("An error occurred while attempting to retrieve commits. Please refer to the error log for more details.", ResponseTypeEnum.Error));
             }
                 
         }
@@ -60,7 +67,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
             var currentDirectory = Directory.GetCurrentDirectory();
             if (!Repository.IsValid(currentDirectory))
             {
-                throw new Exception("Not a valid git repository.");                                
+                throw new ArgumentException("Not a valid git repository.");                                
             }
             using var repo = new Repository(currentDirectory);
             try
@@ -69,7 +76,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
             }
             catch (LibGit2SharpException)
             {
-                throw new Exception($"Error looking up commit {hash}");
+                throw new ArgumentException($"Error looking up commit {hash}");
             }
         }
 
