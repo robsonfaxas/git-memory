@@ -21,7 +21,7 @@ class Program
 
         var serviceProvider = host.Services;
 
-        var app = new CommandUI(serviceProvider.GetRequiredService<IMediator>(), new LogHelper());
+        var app = new CommandUI(serviceProvider.GetRequiredService<IMediator>(), new UserInteraction());
         //app.Args = args.ToList();
         app.Args = new List<string>() { "pick", "C:\\Repos\\git-memory\\test" };
         await app.Run();

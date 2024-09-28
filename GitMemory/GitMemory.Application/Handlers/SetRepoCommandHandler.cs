@@ -25,24 +25,11 @@ namespace GitMemory.Application.Handlers
                 !globalSettings.RepositoryLocation.Equals(request.Parameters.FirstOrDefault()))
             {   
                 request.InteractionWindow.Write(new CommandResponse($"Current Location: {globalSettings.RepositoryLocation}", ResponseTypeEnum.Info));
-                request.InteractionWindow.Write(new CommandResponse("Warning: A repository is already set for this user. Do you want to overwrite the current set location? Y/N", ResponseTypeEnum.Warning));
-                var answer = "";
-                do
-                {
-                    answer = request.InteractionWindow.Read();
-                    if (answer != null)
-                        if (answer.ToUpper().Equals("Y"))
-                            break;
-                        else if (answer.ToUpper().Equals("N"))
-                            return await Task.FromResult(new CommandResponse("No repository changes.", ResponseTypeEnum.Info));
-                        else
-                            request.InteractionWindow.Write(new CommandResponse($"Invalid Command. Answer 'Y' (yes) or 'N' (no) to proceed.", ResponseTypeEnum.Info));
-
-                } while (answer == null || !(answer != null && (answer.ToUpper().Equals("Y") || answer.ToUpper().Equals("N"))));
+                var dialogResult = request.InteractionWindow.Read(DialogButtonsEnum.YesNo, new CommandResponse("Warning: A repository is already set for this user. Do you want to overwrite the current set location? Y/N", ResponseTypeEnum.Warning));
+                if (dialogResult == DialogResultEnum.No)
+                    return await Task.FromResult(new CommandResponse("No repository changes.", ResponseTypeEnum.Info));
             }
             return await _setRepoCommandService.ExecuteCommand(request.Parameters);
         }
-
-        
     }
 }

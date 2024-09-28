@@ -3,11 +3,6 @@ using GitMemory.Domain.Entities.Enums;
 using GitMemory.Domain.Entities.Memories;
 using GitMemory.Domain.Repositories;
 using LibGit2Sharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
 {

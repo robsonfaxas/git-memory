@@ -35,23 +35,9 @@ namespace GitMemory.Application.Handlers
                         request.InteractionWindow.Write(new CommandResponse(file.CommitHash + " - Staged",ResponseTypeEnum.Info));
                     foreach (var file in repository.Staged)
                         request.InteractionWindow.Write(new CommandResponse(file.CommitHash + " - Not Staged\n", ResponseTypeEnum.Info));
-                    request.InteractionWindow.Write(new CommandResponse("Do you want to clear the list before add new? Y/N", ResponseTypeEnum.Info));
-                    var answer = "";
-                    do
-                    {
-                        answer = request.InteractionWindow.Read();
-                        if (answer != null)
-                            if (answer.ToUpper().Equals("Y"))
-                            {
-                                clearPoolList = true;
-                                break;
-                            }
-                            else if (answer.ToUpper().Equals("N"))
-                                break;
-                            else
-                                request.InteractionWindow.Write(new CommandResponse($"Invalid Command. Answer 'Y' (yes) or 'N' (no) to proceed.", ResponseTypeEnum.Info));
 
-                    } while (answer == null || !(answer != null && (answer.ToUpper().Equals("Y") || answer.ToUpper().Equals("N"))));
+                    var dialogResult = request.InteractionWindow.Read(DialogButtonsEnum.YesNo, new CommandResponse("Do you want to clear the list before adding new commits?", ResponseTypeEnum.Warning));
+                    clearPoolList = dialogResult == DialogResultEnum.Yes;
                 }
             }
             return await _pickCommandService.ExecuteCommand(request.Parameters, clearPoolList);
