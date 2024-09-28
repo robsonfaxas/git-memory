@@ -9,5 +9,6 @@
     {
         public const string RepositoryLocationItemKey = "repository";
         public const string ConfigurationFileLocationItemKey = "configurationFile";
+        public const string ErrorLogItemKey = "errorLog";
     }
 }

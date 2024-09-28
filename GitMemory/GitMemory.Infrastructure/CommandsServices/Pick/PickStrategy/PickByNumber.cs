@@ -2,6 +2,7 @@
 using GitMemory.Domain.Entities.Enums;
 using GitMemory.Domain.Entities.Memories;
 using GitMemory.Domain.Repositories;
+using GitMemory.Infrastructure.Repositories;
 using LibGit2Sharp;
 using System.Collections.Generic;
 
@@ -10,9 +11,11 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
     internal class PickByNumber : IPickStrategy
     {
         private readonly IMemoryPoolRepository _memoryPoolRepository;
-        public PickByNumber(IMemoryPoolRepository memoryPoolRepository)
+        private readonly IErrorLogRepository _errorLogRepository;
+        public PickByNumber(IMemoryPoolRepository memoryPoolRepository, IErrorLogRepository errorLogRepository)
         {
             _memoryPoolRepository = memoryPoolRepository;
+            _errorLogRepository = errorLogRepository;
         }
         public Task<CommandResponse> Execute(List<string> values, MemoryPool memoryPool)
         {
@@ -21,14 +24,23 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
             {                
                 var parsed = int.TryParse(values.FirstOrDefault(), out int numberOfLastCommits);
                 if (!parsed)
-                    throw new Exception("Invalid Number in parameter <N>");
+                    throw new ArgumentException("Invalid Number in parameter <N>");
                 hashes = GetCommitHashes(numberOfLastCommits);                
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 return Task.FromResult(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
             }
-            return new PickByList(_memoryPoolRepository).Execute(hashes, memoryPool);
+            catch (InvalidOperationException ex)
+            {
+                return Task.FromResult(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
+            }
+            catch (Exception ex)
+            {
+                _errorLogRepository.Log(ex);
+                return Task.FromResult(new CommandResponse("An error occurred while attempting to retrieve commits. Please refer to the error log for more details.", ResponseTypeEnum.Error));
+            }
+            return new PickByList(_memoryPoolRepository, _errorLogRepository).Execute(hashes, memoryPool);
         }
 
         private List<string> GetCommitHashes(int numberOfLastCommits)

@@ -48,6 +48,32 @@ namespace GitMemory.Infrastructure.CommandsServices
         {
             return _globalSettingsRepository.GetGlobalSettingsFilePath();
         }
+        public Task<CommandResponse> EnableErrorLogs()
+        {
+            try
+            {
+                WriteGlobalSettingsValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ErrorLogItemKey, "TRUE", "");
+                return Task.FromResult(new CommandResponse($"Error Logs enabled.", ResponseTypeEnum.Info));
+            }
+            catch {
+                return Task.FromResult(new CommandResponse("EnableErrorLogs: Unable to enable error logs", ResponseTypeEnum.Error));
+            }
+        }
+
+
+        public Task<CommandResponse> DisableErrorLogs()
+        {
+            try
+            {
+                WriteGlobalSettingsValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ErrorLogItemKey, "FALSE", "");
+                return Task.FromResult(new CommandResponse($"Error Logs disabled.", ResponseTypeEnum.Info));
+            }
+            catch
+            {
+                return Task.FromResult(new CommandResponse("EnableErrorLogs: Unable to disable error logs", ResponseTypeEnum.Error));
+            }
+            
+        }
 
         // user settings
 

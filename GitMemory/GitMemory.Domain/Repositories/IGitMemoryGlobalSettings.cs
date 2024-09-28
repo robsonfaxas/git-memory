@@ -14,5 +14,6 @@ namespace GitMemory.Domain.Repositories
         void WriteValue(string section, string property, string value, string defaultValue);
         string? ReadValue(string section, string property);
         GlobalSettings ReadGlobalSettings();
+        public string FileName { get; set; }
     }
 }
