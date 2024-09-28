@@ -25,7 +25,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick
                 if (clearPoolList)
                     memoryPool = ClearPoolList(memoryPool);
                 var isInteger = int.TryParse(commands.FirstOrDefault(), out int result);
-                _pickStrategy = isInteger ? new PickByNumber() : new PickByList(_memoryPoolRepository);
+                _pickStrategy = isInteger ? new PickByNumber(_memoryPoolRepository) : new PickByList(_memoryPoolRepository);
                 return _pickStrategy.Execute(commands, memoryPool);
             }
             catch (Exception ex)

@@ -1,6 +1,7 @@
 ﻿using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
 using GitMemory.Domain.Entities.Memories;
+using GitMemory.Domain.Repositories;
 using LibGit2Sharp;
 using System.Collections.Generic;
 
@@ -8,6 +9,11 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
 {
     internal class PickByNumber : IPickStrategy
     {
+        private readonly IMemoryPoolRepository _memoryPoolRepository;
+        public PickByNumber(IMemoryPoolRepository memoryPoolRepository)
+        {
+            _memoryPoolRepository = memoryPoolRepository;
+        }
         public Task<CommandResponse> Execute(List<string> values, MemoryPool memoryPool)
         {
             var hashes = new List<string>();
@@ -22,7 +28,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
             {
                 return Task.FromResult(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
             }
-            return new PickByList().Execute(hashes, memoryPool);
+            return new PickByList(_memoryPoolRepository).Execute(hashes, memoryPool);
         }
 
         private List<string> GetCommitHashes(int numberOfLastCommits)

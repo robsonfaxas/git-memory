@@ -1,15 +1,13 @@
 ﻿using GitMemory.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GitMemory.Domain.Entities.Enums;
 
 namespace GitMemory.Domain.UI
 {
     public interface IInteractionWindow
     {
+        string Title { get; set; }
         void Write(CommandResponse command);
         string Read();
+        DialogResultEnum Read(DialogButtonsEnum buttons, CommandResponse command);
     }
 }
