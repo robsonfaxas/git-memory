@@ -38,7 +38,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick
 
         private MemoryPool ClearPoolList(MemoryPool memoryPool)
         {
-            var currentDirectory = Directory.GetCurrentDirectory() ?? "";
+            var currentDirectory = CommandContextAccessor.Current.CurrentDirectory;
             foreach (var repository in memoryPool.GitRepositories.Where(p => p.GitRepositoryPath.ToLower().StartsWith(currentDirectory.ToLower())))
             {
                 repository.Staged.Clear();

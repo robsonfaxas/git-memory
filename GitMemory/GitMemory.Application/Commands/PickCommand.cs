@@ -1,17 +1,15 @@
 ﻿using GitMemory.Application.Interfaces;
-using GitMemory.Domain.UI;
 
 namespace GitMemory.Application.Commands
 {
     public class PickCommand : IGitCommandRequest
     {
-        public List<string> Parameters { get; set; }
-        public IInteractionWindow InteractionWindow { get; set; }
+        public List<string> Parameters { get; set; } = new List<string>();
 
-        public PickCommand(List<string> parameters, IInteractionWindow logger)
+        public PickCommand Initialize(List<string> commands)
         {
-            Parameters = parameters;
-            InteractionWindow = logger;
+            Parameters = commands;            
+            return this;
         }
     }
 }
