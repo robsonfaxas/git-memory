@@ -1,11 +1,6 @@
 ﻿using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
 using GitMemory.Domain.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GitMemory.Infrastructure.Services
 {
@@ -44,7 +39,7 @@ namespace GitMemory.Infrastructure.Services
 
         public string GetGlobalSettingsFilePath()
         {
-            string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            string userFolder = CommandContextAccessor.Current.UserProfileDirectory;
             return String.Concat(userFolder, $"\\{FileName}");
         }
 

@@ -30,7 +30,7 @@ namespace GitMemory.Infrastructure.CommandsServices.SetRepo
                     return Task.FromResult(new CommandResponse("No arguments provided.", ResponseTypeEnum.Error));
                 string repositoryFolder = "";
                 if (commands.First().Equals("."))
-                    repositoryFolder = Directory.GetCurrentDirectory();
+                    repositoryFolder = CommandContextAccessor.Current.CurrentDirectory;
                 else
                     repositoryFolder = commands.First();
                 if (repositoryFolder != null && Directory.Exists(repositoryFolder))

@@ -1,4 +1,5 @@
-﻿using GitMemory.Domain.Entities.Memories;
+﻿using GitMemory.Domain.Entities;
+using GitMemory.Domain.Entities.Memories;
 using GitMemory.Domain.Repositories;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace GitMemory.Infrastructure.Repositories
         private readonly bool _errorLogsEnabled;
         public ErrorLogRepository(IGitMemoryGlobalSettings globalSettings)
         {
-            _filePath = globalSettings.ReadGlobalSettings().RepositoryLocation ?? Directory.GetCurrentDirectory() ?? "";
+            _filePath = globalSettings.ReadGlobalSettings().RepositoryLocation ?? CommandContextAccessor.Current.CurrentDirectory;
             _filePath += $"\\{DateTime.Now:yyyy-MM-dd}-errors.log";
             _errorLogsEnabled = globalSettings.ReadGlobalSettings().IsErrorLogsEnabled;
         }

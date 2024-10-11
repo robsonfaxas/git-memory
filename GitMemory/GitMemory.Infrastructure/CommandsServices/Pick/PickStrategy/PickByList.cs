@@ -24,7 +24,6 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
         {
             try
             {
-                var currentDirectory = Directory.GetCurrentDirectory() ?? "";
                 var commits = new List<Commit>();
                 foreach (var hash in hashes)
                 {
@@ -35,7 +34,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
                         commits.Add(commit);
                 }
 
-                foreach (var repository in memoryPool.GitRepositories.Where(p => p.GitRepositoryPath.ToLower().StartsWith(currentDirectory.ToLower())))
+                foreach (var repository in memoryPool.GitRepositories.Where(p => p.GitRepositoryPath.ToLower().StartsWith(CommandContextAccessor.Current.CurrentDirectory.ToLower())))
                 {
                     foreach (var commit in commits)
                     {
@@ -64,7 +63,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
 
         private Commit? GetCommit(string hash)
         {
-            var currentDirectory = Directory.GetCurrentDirectory();
+            var currentDirectory = CommandContextAccessor.Current.CurrentDirectory;
             if (!Repository.IsValid(currentDirectory))
             {
                 throw new ArgumentException("Not a valid git repository.");                                

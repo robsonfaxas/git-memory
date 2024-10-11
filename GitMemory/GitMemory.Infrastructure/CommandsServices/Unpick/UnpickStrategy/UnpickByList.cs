@@ -19,7 +19,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Unpick.UnpickStrategy
         {
             try
             {
-                var currentDirectory = Directory.GetCurrentDirectory() ?? "";
+                var currentDirectory = CommandContextAccessor.Current.CurrentDirectory;
                 foreach (var repository in memoryPool.GitRepositories.Where(p => p.GitRepositoryPath.ToLower().StartsWith(currentDirectory.ToLower())))
                     foreach(var hash in hashes)
                         RemoveIfExists(repository.Unstaged, repository.Staged, hash);
