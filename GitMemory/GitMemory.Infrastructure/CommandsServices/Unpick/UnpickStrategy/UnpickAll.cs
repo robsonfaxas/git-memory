@@ -2,6 +2,7 @@
 using GitMemory.Domain.Entities.Enums;
 using GitMemory.Domain.Entities.Memories;
 using GitMemory.Domain.Repositories;
+using LibGit2Sharp;
 
 namespace GitMemory.Infrastructure.CommandsServices.Unpick.UnpickStrategy
 {
@@ -20,7 +21,12 @@ namespace GitMemory.Infrastructure.CommandsServices.Unpick.UnpickStrategy
             try
             {
                 var currentDirectory = CommandContextAccessor.Current.CurrentDirectory;
-                foreach (var repository in memoryPool.GitRepositories.Where(p => p.GitRepositoryPath.ToLower().StartsWith(currentDirectory.ToLower())))
+                string repoPath = Repository.Discover(CommandContextAccessor.Current.CurrentDirectory);
+
+                if (string.IsNullOrEmpty(repoPath))
+                    throw new InvalidOperationException("No Git repository found in the current directory.");
+
+                foreach (var repository in memoryPool.GitRepositories.Where(p => p.GitRepositoryPath.ToLower().StartsWith(repoPath.ToLower())))
                 {
                     repository.Staged.Clear();
                     repository.Unstaged.Clear();

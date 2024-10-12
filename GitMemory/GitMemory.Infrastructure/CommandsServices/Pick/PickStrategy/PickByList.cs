@@ -24,7 +24,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
         {
             try
             {
-                var commits = new List<Commit>();
+                var commits = new List<MemoryCommit>();
                 foreach (var hash in hashes)
                 {
                     var commit = GetCommit(hash);
@@ -34,17 +34,14 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
                         commits.Add(commit);
                 }
 
-                foreach (var repository in memoryPool.GitRepositories.Where(p => p.GitRepositoryPath.ToLower().StartsWith(CommandContextAccessor.Current.CurrentDirectory.ToLower())))
+                AddRepositoryIfNotExists(memoryPool);
+                var currentRepository = Repository.Discover(CommandContextAccessor.Current.CurrentDirectory);
+                
+                foreach (var repository in memoryPool.GitRepositories.Where(p => p.GitRepositoryPath.ToLower().Equals(currentRepository.ToLower())))
                 {
                     foreach (var commit in commits)
-                    {
-                        var memoryCommit = new MemoryCommit()
-                        {
-                            CommitDate = commit.Committer.When.DateTime,
-                            CommitHash = commit.Sha
-                        };
-                        AddIfNotExists(repository.Unstaged, repository.Staged, memoryCommit);                        
-                    }
+                        AddIfNotExists(repository.Unstaged, repository.Staged, commit);                        
+                    
                 }
                 _memoryPoolRepository.WriteMemoryPool(memoryPool);
                 return Task.FromResult(new CommandResponse("Commits added.", ResponseTypeEnum.Info));
@@ -61,17 +58,39 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
                 
         }
 
-        private Commit? GetCommit(string hash)
+        private void AddRepositoryIfNotExists(MemoryPool memoryPool)
         {
-            var currentDirectory = CommandContextAccessor.Current.CurrentDirectory;
-            if (!Repository.IsValid(currentDirectory))
+            string repoPath = Repository.Discover(CommandContextAccessor.Current.CurrentDirectory);
+            if (string.IsNullOrEmpty(repoPath))
+            {
+                throw new ArgumentException("Not a valid git repository.");
+            }
+            if (!memoryPool.GitRepositories
+                    .Where(p => p.GitRepositoryPath.ToLower().StartsWith(repoPath.ToLower()))
+                    .Any())
+            {
+                var repository = new GitRepository() { GitRepositoryPath = repoPath};
+                memoryPool.GitRepositories .Add(repository);
+            }            
+        }
+
+        private MemoryCommit? GetCommit(string hash)
+        {
+            string repoPath = Repository.Discover(CommandContextAccessor.Current.CurrentDirectory);
+            if (string.IsNullOrEmpty(repoPath))
             {
                 throw new ArgumentException("Not a valid git repository.");                                
             }
-            using var repo = new Repository(currentDirectory);
+            using var repo = new Repository(repoPath);
             try
             {
-                return repo.Lookup<Commit>(hash);                
+                var commit = repo.Commits.FirstOrDefault(p => p.Sha.ToLower().Equals(hash.ToLower()));
+                var memoryCommit = new MemoryCommit()
+                {
+                    CommitDate = commit?.Author?.When.DateTime ?? default,
+                    CommitHash = commit?.Sha ?? default!
+                };
+                return memoryCommit;
             }
             catch (LibGit2SharpException)
             {
@@ -81,8 +100,8 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
 
         private void AddIfNotExists(List<MemoryCommit> unstaged, List<MemoryCommit> staged, MemoryCommit newCommit)
         {
-            if (!staged.Any(commit => commit.CommitHash.Equals(newCommit.CommitHash)) && 
-                !unstaged.Any(commit => commit.CommitHash.Equals(newCommit.CommitHash)))
+            if (!staged.Any(commit => commit.CommitHash.Equals(newCommit.CommitHash, StringComparison.OrdinalIgnoreCase)) && 
+                !unstaged.Any(commit => commit.CommitHash.Equals(newCommit.CommitHash, StringComparison.OrdinalIgnoreCase)))
                 unstaged.Add(newCommit);          
         }
     }

@@ -44,7 +44,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
         private List<string> GetCommitHashes(int numberOfLastCommits)
         {
             var commitHashes = new List<string>();
-            string repoPath = Repository.Discover(".");
+            string repoPath = Repository.Discover(CommandContextAccessor.Current.CurrentDirectory);
 
             if (string.IsNullOrEmpty(repoPath))
                 throw new InvalidOperationException("No Git repository found in the current directory.");            
