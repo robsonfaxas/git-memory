@@ -11,7 +11,7 @@ namespace GitMemory.ConsoleApp
     {
         private readonly IMediator _mediator;        
         private readonly IInteractionWindow _interactionWindow;
-        private readonly GitCommandFactory _commandFactory;
+        private readonly IGitCommandFactory _commandFactory;
         private CommandContextConfiguration _contextConfiguration;
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace GitMemory.ConsoleApp
         /// </summary>
         public List<string> Args { get; set; } = new List<string>();
 
-        public CommandUI(IMediator mediator, IInteractionWindow interactionWindow, GitCommandFactory commandFactory,
+        public CommandUI(IMediator mediator, IInteractionWindow interactionWindow, IGitCommandFactory commandFactory,
                         CommandContextConfiguration contextConfiguration)
         {
             _mediator = mediator;            

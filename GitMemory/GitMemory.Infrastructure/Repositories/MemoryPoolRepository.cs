@@ -1,11 +1,6 @@
 ﻿using GitMemory.Domain.Entities.Memories;
 using GitMemory.Domain.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace GitMemory.Infrastructure.Repositories
 {
