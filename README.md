@@ -28,3 +28,22 @@ Using the command line, similar to Git, you can perform the following operations
 
 ## Technologies:
 This project is written in **C#**, leveraging the `libgit2sharp` library to manipulate Git repositories programmatically.
+
+## Integration Tests' Code Coverage
+
+To run tests with coverage:
+
+```bash
+dotnet test --collect:"XPlat"
+```
+
+To generate a coverage report in HTML format:
+
+1. Update the path to your latest test run.
+2. Run:
+
+```bash
+reportgenerator -reports:"{Path-To-Last-Coverlet-Run}\coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+```
+
+This will output the coverage report to the `coveragereport` folder.

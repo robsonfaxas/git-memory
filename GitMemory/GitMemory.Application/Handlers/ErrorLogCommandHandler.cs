@@ -33,7 +33,9 @@ namespace GitMemory.Application.Handlers
                 else
                     return await Task.FromResult(new CommandResponse($"Invalid parameter {request.Parameters.FirstOrDefault()}", ResponseTypeEnum.Error));
             }
-            return await Task.FromResult(new CommandResponse($"Missing parameter `--enable` or `--disable` for command `errorlog`", ResponseTypeEnum.Error));
+            
+            var errorLogStatus = _settingsService.ReadGlobalSettings().IsErrorLogsEnabled ? "ENABLED" : "DISABLED";            
+            return await Task.FromResult(new CommandResponse($"Error Log is currently {errorLogStatus}. Use `--enable` or `--disable` to change the status.", ResponseTypeEnum.Info));
         }
     }
 }

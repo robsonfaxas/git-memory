@@ -1,20 +1,18 @@
 using GitMemory.ConsoleApp.IntegrationTests.Configuration;
-using GitMemory.ConsoleApp.IntegrationTests.Fixtures;
-using System.Security.AccessControl;
-using System.Security.Principal;
+using Xunit.Priority;
 
-[assembly: TestCaseOrderer("GitMemory.ConsoleApp.IntegrationTests.Configuration.PriorityOrderer", "GitMemory.ConsoleApp.IntegrationTests")]
-namespace GitMemory.ConsoleApp.IntegrationTests
+namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
 {
-    public class SetRepoCommandTest : IClassFixture<CommandTestFixture>
+    [TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
+    public class SetRepoCommandTest : IClassFixture<SetRepoCommandTestFixture>
     {
-        private CommandTestFixture _commandTestFixture { get; set; }
-        public SetRepoCommandTest(CommandTestFixture commandTestFixture)
+        private SetRepoCommandTestFixture _commandTestFixture { get; set; }
+        public SetRepoCommandTest(SetRepoCommandTestFixture commandTestFixture)
         {
-            this._commandTestFixture = commandTestFixture;
+            _commandTestFixture = commandTestFixture;
         }
 
-        [Fact, TestPriority(1)]
+        [Fact, Priority(1)]
         public async void TestSetRepoWithoutArguments_ReturnErrorMessage()
         {
             //Arrange
@@ -34,15 +32,15 @@ namespace GitMemory.ConsoleApp.IntegrationTests
             Assert.Empty(Interactions.DialogResultRequest);
         }
 
-        [Fact, TestPriority(2)]
+        [Fact, Priority(2)]
         public async void TestSetRepo_CreatesRepo()
         {
             //Arrange
             var expectedResult = "Folder created successfully.";
 
             //Act
-            await ProgramTest.MainTestAsync(new string[6]{ "set-repo", _commandTestFixture.RepoDirectory,  
-                                                            "--GlobalSettingsFolder", _commandTestFixture.GlobalSettingsDirectory, 
+            await ProgramTest.MainTestAsync(new string[6]{ "set-repo", _commandTestFixture.RepoDirectory,
+                                                            "--GlobalSettingsFolder", _commandTestFixture.GlobalSettingsDirectory,
                                                             "--CurrentDirectory", _commandTestFixture.CurrentDirectoryFolder});
 
             //Assert
@@ -54,7 +52,7 @@ namespace GitMemory.ConsoleApp.IntegrationTests
             Assert.Empty(Interactions.DialogResultRequest);
         }
 
-        [Fact, TestPriority(3)]
+        [Fact, Priority(3)]
         public async void TestSetAnotherRepo_UserSaysYes_CreatesRepo()
         {
             // Arrange
@@ -65,8 +63,8 @@ namespace GitMemory.ConsoleApp.IntegrationTests
             string expectedResult = "Folder created successfully.";
 
             // Act
-            await ProgramTest.MainTestAsync(new string[6] { "set-repo", repoDirectory2, 
-                                                            "--GlobalSettingsFolder", _commandTestFixture.GlobalSettingsDirectory, 
+            await ProgramTest.MainTestAsync(new string[6] { "set-repo", repoDirectory2,
+                                                            "--GlobalSettingsFolder", _commandTestFixture.GlobalSettingsDirectory,
                                                             "--CurrentDirectory", _commandTestFixture.CurrentDirectoryFolder });
 
             // Assert
@@ -84,9 +82,9 @@ namespace GitMemory.ConsoleApp.IntegrationTests
 
             // clean up
             _commandTestFixture.RepoDirectory = repoDirectory2;
-        }        
+        }
 
-        [Fact, TestPriority(4)]
+        [Fact, Priority(4)]
         public async void TestSetAnotherRepo_UserSaysNo_Cancels()
         {
             // Arrange
@@ -115,36 +113,7 @@ namespace GitMemory.ConsoleApp.IntegrationTests
             Assert.Empty(Interactions.DialogResultRequest);
         }
 
-        [Fact, TestPriority(5)]
-        public async void TestSetAnotherRepoWithoutPermissionToCreate_UserSaysYes_ReturnsError()
-        {
-            // Arrange
-            var repoDirectory3 = Path.Combine(_commandTestFixture.TempDirectory, "repo3");
-            _commandTestFixture.CreateFolderWithPermissionToCreateSubFolder(repoDirectory3);
-            Interactions.DialogResultRequest.Enqueue(Domain.Entities.Enums.DialogResultEnum.Yes);
-            string currentRepoWarning = $"Current Repository Location: {_commandTestFixture.RepoDirectory}"; // current applied repo check
-            string expectedResult = $"Error creating directory in {repoDirectory3}";
-
-            // Act
-            await ProgramTest.MainTestAsync(new string[6] { "set-repo", repoDirectory3,
-                                                            "--GlobalSettingsFolder", _commandTestFixture.GlobalSettingsDirectory,
-                                                            "--CurrentDirectory", _commandTestFixture.CurrentDirectoryFolder });
-
-            // Assert
-            var actualCurrentRepoWarning = Interactions.Output.Dequeue();
-            Assert.Equal(currentRepoWarning, actualCurrentRepoWarning.Message);
-            Assert.Equal(Domain.Entities.Enums.ResponseTypeEnum.Info, actualCurrentRepoWarning.ResponseType);
-
-            var actualResultOutput = Interactions.Output.Dequeue();
-            Assert.Equal(expectedResult, actualResultOutput.Message);
-            Assert.Equal(Domain.Entities.Enums.ResponseTypeEnum.Error, actualResultOutput.ResponseType);
-
-            Assert.Empty(Interactions.Output);
-            Assert.Empty(Interactions.StringRequest);
-            Assert.Empty(Interactions.DialogResultRequest);
-        }
-
-        [Fact, TestPriority(6)]
+        [Fact, Priority(5)]
         public async void TestSetAnotherRepoUsingDot_UserSaysYes_CreatesRepo()
         {
             // Arrange

@@ -45,14 +45,10 @@ namespace GitMemory.ConsoleApp
 
         private IGitCommandRequest ParseRequest()
         {
-            if (Args.Count > 1)
+            if (Args.Count >= 1)
             {
                 // Using the factory to get the appropriate command
                 return _commandFactory.GetCommand(Args.First(), Args.Skip(1).ToList());
-            }
-            else if (Args.Count == 1)
-            {
-                throw new ArgumentException("No arguments provided.");
             }
             else
             {
