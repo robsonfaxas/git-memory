@@ -13,6 +13,7 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
         public override async Task InitializeAsync()
         {
             await base.InitializeAsync();
+            Console.WriteLine($"[SetRepo] Temp Directory: {TempDirectory}");
         }
     }
 }

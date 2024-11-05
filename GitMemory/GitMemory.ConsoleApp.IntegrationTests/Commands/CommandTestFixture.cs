@@ -2,7 +2,7 @@
 using System.Security.AccessControl;
 using System.Security.Principal;
 
-namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
+namespace GitMemory.ConsoleApp.IntegrationTests.Commands
 {
     public abstract class CommandTestFixture : IAsyncLifetime
     {

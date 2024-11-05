@@ -2,7 +2,7 @@
 using System.Security.AccessControl;
 using System.Security.Principal;
 
-namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
+namespace GitMemory.ConsoleApp.IntegrationTests.Commands.ErrorLog
 {
     public class ErrorLogCommandTestFixture : CommandTestFixture
     {
@@ -20,6 +20,7 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
             Interactions.Output.Clear();
             Interactions.DialogResultRequest.Clear();
             Interactions.StringRequest.Clear();
+            Console.WriteLine($"[ErrorLog] Temp Directory: {TempDirectory}");
         }
     }
 }

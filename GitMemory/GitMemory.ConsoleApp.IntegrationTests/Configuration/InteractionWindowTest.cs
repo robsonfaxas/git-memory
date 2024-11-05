@@ -24,7 +24,10 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Configuration
         public DialogResultEnum Read(DialogButtonsEnum buttons, CommandResponse command)
         {
             if (Interactions.DialogResultRequest.Any())
+            {
+                Interactions.Output.Enqueue(command);
                 return Interactions.DialogResultRequest.Dequeue();
+            }
             else
                 throw new Exception("No inputs were configured for this test. Please, in \"Arrange\" section of this xunit test, add the expected dialog user inputs for this test.");            
         }
