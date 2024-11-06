@@ -1,30 +1,36 @@
-﻿using GitMemory.ConsoleApp;
+﻿using GitMemory.Application.Commands;
+using GitMemory.Application.Interfaces;
+using GitMemory.Domain.Entities;
+using GitMemory.Domain.UI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using GitMemory.Application.Configuration;
-using GitMemory.Domain.UI;
-using GitMemory.Application.Commands;
-using GitMemory.Application.Interfaces;
-using GitMemory.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public class Program
+namespace GitMemory.ConsoleApp.IntegrationTests.Configuration
 {
-    public static async Task Main(string[] args)
+    internal class ProgramTest
     {
-        var host = new Program().CreateHostBuilder().Build();
-        var serviceProvider = host.Services;
-        var app = serviceProvider.GetRequiredService<ICommandUI>();
-        app.Args = args.ToList();
-        await app.Run();
-    }
+        public static async Task MainTestAsync(string[] args)
+        {
+            var host = new ProgramTest().CreateHostBuilder().Build();
+            var serviceProvider = host.Services;
+            var app = serviceProvider.GetRequiredService<ICommandUI>();
+            app.Args = args.ToList();
+            await app.Run();
+        }
 
-    public virtual IHostBuilder CreateHostBuilder() =>
+        public IHostBuilder CreateHostBuilder() =>
         Host.CreateDefaultBuilder()
             .ConfigureServices((hostContext, services) =>
             {
                 services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
                 services.AddScoped<ICommandUI, CommandUI>();
-                services.AddSingleton<IInteractionWindow, UserInteraction>();
+                services.AddSingleton<IInteractionWindow, InteractionWindowTest>();
                 services.AddTransient<SetRepoCommand>();
                 services.AddTransient<PickCommand>();
                 services.AddTransient<UnpickCommand>();
@@ -34,4 +40,5 @@ public class Program
 
                 services.AddApplicationServices();
             });
+    }
 }

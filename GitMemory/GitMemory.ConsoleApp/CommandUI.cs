@@ -26,14 +26,14 @@ namespace GitMemory.ConsoleApp
             _mediator = mediator;            
             _interactionWindow = interactionWindow;
             _commandFactory = commandFactory;
-            _contextConfiguration = contextConfiguration;
-            BuildContext();
+            _contextConfiguration = contextConfiguration;            
         }
 
         public async Task Run()
         {
             try
             {
+                BuildContext();
                 var commandResponse = await _mediator.Send(ParseRequest());
                 _interactionWindow.Write(commandResponse);
             }
@@ -45,14 +45,10 @@ namespace GitMemory.ConsoleApp
 
         private IGitCommandRequest ParseRequest()
         {
-            if (Args.Count > 1)
+            if (Args.Count >= 1)
             {
                 // Using the factory to get the appropriate command
                 return _commandFactory.GetCommand(Args.First(), Args.Skip(1).ToList());
-            }
-            else if (Args.Count == 1)
-            {
-                throw new ArgumentException("No arguments provided.");
             }
             else
             {
@@ -61,9 +57,75 @@ namespace GitMemory.ConsoleApp
         }
 
         private CommandContextConfiguration BuildContext()
+        {            
+            _contextConfiguration.GlobalSettingsDirectory = GetGlobalSettingsDirectory();
+            _contextConfiguration.CurrentDirectory = GetCurrentDirectory();
+            CommandContextAccessor.Current = _contextConfiguration;
+            return _contextConfiguration;
+        }
+
+        /// <summary>
+        /// Check if UI has sent a directive requesting to override GlobalSettings folder
+        /// otherwise gets UserProfile directory
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        private string GetGlobalSettingsDirectory()
         {
-            _contextConfiguration.UserProfileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) ?? "";
-            _contextConfiguration.CurrentDirectory = Directory.GetCurrentDirectory() ?? "";
+            bool foundGlobalSettingsOverride = false;
+            foreach (var arg in Args.ToList())
+            {
+                if (arg.ToLower().Equals("--globalsettingsfolder"))
+                {
+                    foundGlobalSettingsOverride = true;
+                    Args.Remove(arg);
+                    continue;
+                }
+                if (foundGlobalSettingsOverride)
+                {
+                    Args.Remove(arg);
+                    if (Directory.Exists(arg))
+                        return arg;
+                    else
+                        throw new ArgumentException("GlobalSettings folder does not exist");
+                }
+            }
+            return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) ?? "";
+        }
+
+        /// <summary>
+        /// Check if UI has sent a directive requesting to override CurrentDirectory folder
+        /// otherwise gets the CurrentDirectory from the context
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        private string GetCurrentDirectory()
+        {
+            bool foundCurrentDirectoryOverride = false;
+            foreach (var arg in Args.ToList())
+            {
+                if (arg.ToLower().Equals("--currentdirectory"))
+                {
+                    foundCurrentDirectoryOverride = true;
+                    Args.Remove(arg);
+                    continue;
+                }
+                if (foundCurrentDirectoryOverride)
+                {
+                    Args.Remove(arg);
+                    if (Directory.Exists(arg))
+                        return arg;
+                    else
+                        throw new ArgumentException("CurrentDirectory folder does not exist");
+                }
+            }
+            return Directory.GetCurrentDirectory() ?? "";
+        }
+
+        public CommandContextConfiguration SetContext(string globalSettingsDirectory, string currentDirectory)
+        {
+            _contextConfiguration.GlobalSettingsDirectory = globalSettingsDirectory;
+            _contextConfiguration.CurrentDirectory = currentDirectory;
             CommandContextAccessor.Current = _contextConfiguration;
             return _contextConfiguration;
         }

@@ -39,7 +39,7 @@ namespace GitMemory.Infrastructure.Services
 
         public string GetGlobalSettingsFilePath()
         {
-            string userFolder = CommandContextAccessor.Current.UserProfileDirectory;
+            string userFolder = CommandContextAccessor.Current.GlobalSettingsDirectory;
             return String.Concat(userFolder, $"\\{FileName}");
         }
 

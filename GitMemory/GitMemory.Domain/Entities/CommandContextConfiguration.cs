@@ -15,7 +15,7 @@ namespace GitMemory.Domain.Entities
         }
 
         public string CurrentDirectory { get; set; } = string.Empty;
-        public string UserProfileDirectory { get; set; } = string.Empty;
+        public string GlobalSettingsDirectory { get; set; } = string.Empty;
         public IInteractionWindow InteractionWindow { get; set; }
     }
 }
