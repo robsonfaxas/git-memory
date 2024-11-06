@@ -58,9 +58,9 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
             // Arrange
             var repoDirectory2 = Path.Combine(_commandTestFixture.TempDirectory, "repo2");
             Directory.CreateDirectory(repoDirectory2);
+            string expectedRepositoryInfo = $"Current Repository Location: {_commandTestFixture.RepoDirectory}"; // current applied repo check
             string expectedQuestion = "Warning: A repository is already set in another location. Do you want to overwrite the current location set?";
-            Interactions.DialogResultRequest.Enqueue(Domain.Entities.Enums.DialogResultEnum.Yes);
-            string expectedAnswer = $"Current Repository Location: {_commandTestFixture.RepoDirectory}"; // current applied repo check
+            Interactions.DialogResultRequest.Enqueue(Domain.Entities.Enums.DialogResultEnum.Yes);            
             string expectedResult = "Folder created successfully.";
 
             // Act
@@ -69,13 +69,13 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
                                                             "--CurrentDirectory", _commandTestFixture.CurrentDirectoryFolder });
 
             // Assert
+            var actualRepositoryInfo = Interactions.Output.Dequeue();
+            Assert.Equal(expectedRepositoryInfo, actualRepositoryInfo.Message);
+            Assert.Equal(Domain.Entities.Enums.ResponseTypeEnum.Info, actualRepositoryInfo.ResponseType);
+
             var actualQuestion = Interactions.Output.Dequeue();
             Assert.Equal(expectedQuestion, actualQuestion.Message);
-            Assert.Equal(Domain.Entities.Enums.ResponseTypeEnum.Warning, actualQuestion.ResponseType);
-
-            var actualAnswer = Interactions.Output.Dequeue();
-            Assert.Equal(expectedAnswer, actualAnswer.Message);
-            Assert.Equal(Domain.Entities.Enums.ResponseTypeEnum.Info, actualAnswer.ResponseType);
+            Assert.Equal(Domain.Entities.Enums.ResponseTypeEnum.Warning, actualQuestion.ResponseType);            
 
             var actualResult = Interactions.Output.Dequeue();
             Assert.Equal(expectedResult, actualResult.Message);
@@ -95,9 +95,9 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
             // Arrange
             var repoDirectory3 = Path.Combine(_commandTestFixture.TempDirectory, "repo3");
             Directory.CreateDirectory(repoDirectory3);
+            string expectedRepositoryInfo = $"Current Repository Location: {_commandTestFixture.RepoDirectory}"; // current applied repo check
             string expectedQuestion = "Warning: A repository is already set in another location. Do you want to overwrite the current location set?";
-            Interactions.DialogResultRequest.Enqueue(Domain.Entities.Enums.DialogResultEnum.No); // User Says No
-            string expectedAnswer = $"Current Repository Location: {_commandTestFixture.RepoDirectory}"; // current applied repo check
+            Interactions.DialogResultRequest.Enqueue(Domain.Entities.Enums.DialogResultEnum.No); // User Says No            
             string expectedResult = "No repository changes.";
 
             // Act
@@ -106,13 +106,13 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
                                                             "--CurrentDirectory", _commandTestFixture.CurrentDirectoryFolder });
 
             // Assert
+            var actualRepositoryInfo = Interactions.Output.Dequeue();
+            Assert.Equal(expectedRepositoryInfo, actualRepositoryInfo.Message);
+            Assert.Equal(Domain.Entities.Enums.ResponseTypeEnum.Info, actualRepositoryInfo.ResponseType);
+
             var actualQuestion = Interactions.Output.Dequeue();
             Assert.Equal(expectedQuestion, actualQuestion.Message);
-            Assert.Equal(Domain.Entities.Enums.ResponseTypeEnum.Warning, actualQuestion.ResponseType);
-
-            var actualAnswer = Interactions.Output.Dequeue();
-            Assert.Equal(expectedAnswer, actualAnswer.Message);
-            Assert.Equal(Domain.Entities.Enums.ResponseTypeEnum.Info, actualAnswer.ResponseType);
+            Assert.Equal(Domain.Entities.Enums.ResponseTypeEnum.Warning, actualQuestion.ResponseType);            
 
             var actualResultOutput = Interactions.Output.Dequeue();
             Assert.Equal(expectedResult, actualResultOutput.Message);
@@ -129,9 +129,9 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
             // Arrange
             var repoDirectoryDot = ".";
             Directory.CreateDirectory(repoDirectoryDot);
+            string expectedRepositoryInfo = $"Current Repository Location: {_commandTestFixture.RepoDirectory}"; // current applied repo check
             string expectedQuestion = "Warning: A repository is already set in another location. Do you want to overwrite the current location set?";
-            Interactions.DialogResultRequest.Enqueue(Domain.Entities.Enums.DialogResultEnum.Yes);
-            string expectedAnswer = $"Current Repository Location: {_commandTestFixture.RepoDirectory}"; // current applied repo check
+            Interactions.DialogResultRequest.Enqueue(Domain.Entities.Enums.DialogResultEnum.Yes);            
             string expectedResult = "Folder created successfully.";
 
             // Act
@@ -140,13 +140,13 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
                                                             "--CurrentDirectory", _commandTestFixture.CurrentDirectoryFolder });
 
             // Assert
+            var actualRepositoryInfo = Interactions.Output.Dequeue();
+            Assert.Equal(expectedRepositoryInfo, actualRepositoryInfo.Message);
+            Assert.Equal(Domain.Entities.Enums.ResponseTypeEnum.Info, actualRepositoryInfo.ResponseType);
+
             var actualQuestion = Interactions.Output.Dequeue();
             Assert.Equal(expectedQuestion, actualQuestion.Message);
-            Assert.Equal(Domain.Entities.Enums.ResponseTypeEnum.Warning, actualQuestion.ResponseType);
-
-            var actualCurrentRepoWarning = Interactions.Output.Dequeue();
-            Assert.Equal(expectedAnswer, actualCurrentRepoWarning.Message);
-            Assert.Equal(Domain.Entities.Enums.ResponseTypeEnum.Info, actualCurrentRepoWarning.ResponseType);
+            Assert.Equal(Domain.Entities.Enums.ResponseTypeEnum.Warning, actualQuestion.ResponseType);            
 
             var actualResult = Interactions.Output.Dequeue();
             Assert.Equal(expectedResult, actualResult.Message);
