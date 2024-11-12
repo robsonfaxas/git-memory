@@ -1,20 +1,21 @@
 ﻿using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
-using GitMemory.Domain.Repositories;
 using GitMemory.Domain.Service.Pick;
 using GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy;
 using GitMemory.Domain.Entities.Memories;
+using GitMemory.Domain.Service;
+using GitMemory.CultureConfig;
 namespace GitMemory.Infrastructure.CommandsServices.Pick
 {
     public class PickCommandService : IPickCommandService
     {
-        private readonly IMemoryPoolRepository _memoryPoolRepository;
-        private readonly IErrorLogRepository _errorLogRepository;
+        private readonly IMemoryPoolService _memoryPoolService;
+        private readonly IErrorLogService _errorLogService;
         private IPickStrategy _pickStrategy = null!;
-        public PickCommandService(IMemoryPoolRepository memoryPoolRepository, IErrorLogRepository errorLogRepository)
+        public PickCommandService(IMemoryPoolService memoryPoolService, IErrorLogService errorLogService)
         {
-            _memoryPoolRepository = memoryPoolRepository;
-            _errorLogRepository = errorLogRepository;
+            _memoryPoolService = memoryPoolService;
+            _errorLogService = errorLogService;
         }
 
         public Task<CommandResponse> ExecuteCommand(List<string> commands, bool clearPoolList)
@@ -22,12 +23,12 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick
             try
             {
                 if (commands == null || commands.Count == 0)
-                    return Task.FromResult(new CommandResponse("No arguments provided.", ResponseTypeEnum.Error));
-                var memoryPool = _memoryPoolRepository.ReadMemoryPool() ?? new MemoryPool();
+                    return Task.FromResult(new CommandResponse(ResourceMessages.Services_Pick_MissingArgument, ResponseTypeEnum.Error));
+                var memoryPool = _memoryPoolService.ReadMemoryPool() ?? new MemoryPool();
                 if (clearPoolList)
                     memoryPool = ClearPoolList(memoryPool);
                 var isInteger = int.TryParse(commands.FirstOrDefault(), out int result);
-                _pickStrategy = isInteger ? new PickByNumber(_memoryPoolRepository, _errorLogRepository) : new PickByList(_memoryPoolRepository, _errorLogRepository);
+                _pickStrategy = isInteger ? new PickByNumber(_memoryPoolService, _errorLogService) : new PickByList(_memoryPoolService, _errorLogService);
                 return _pickStrategy.Execute(commands, memoryPool);
             }
             catch (Exception ex)

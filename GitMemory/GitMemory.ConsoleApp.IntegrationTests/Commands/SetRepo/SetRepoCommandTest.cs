@@ -1,4 +1,5 @@
 using GitMemory.ConsoleApp.IntegrationTests.Configuration;
+using GitMemory.CultureConfig;
 using Xunit.Priority;
 
 namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
@@ -16,7 +17,7 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
         public async void TestSetRepoWithoutArguments_ReturnErrorMessage()
         {
             //Arrange
-            var expectedResult = "No arguments provided.";
+            var expectedResult = ResourceMessages.Services_SetRepo_MissingArgument;
 
             //Act
             await ProgramTest.MainTestAsync(new string[5]{ "set-repo",
@@ -36,7 +37,7 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
         public async void TestSetRepo_CreatesRepo()
         {
             //Arrange
-            var expectedResult = "Folder created successfully.";
+            var expectedResult = ResourceMessages.Services_SetRepo_CreationSuccess;
 
             //Act
             await ProgramTest.MainTestAsync(new string[6]{ "set-repo", _commandTestFixture.RepoDirectory,
@@ -58,10 +59,10 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
             // Arrange
             var repoDirectory2 = Path.Combine(_commandTestFixture.TempDirectory, "repo2");
             Directory.CreateDirectory(repoDirectory2);
-            string expectedRepositoryInfo = $"Current Repository Location: {_commandTestFixture.RepoDirectory}"; // current applied repo check
-            string expectedQuestion = "Warning: A repository is already set in another location. Do you want to overwrite the current location set?";
+            string expectedRepositoryInfo = string.Format(ResourceMessages.Handlers_SetRepo_CurrentRepoInfo, _commandTestFixture.RepoDirectory);
+            string expectedQuestion = ResourceMessages.Handlers_SetRepo_Warning;
             Interactions.DialogResultRequest.Enqueue(Domain.Entities.Enums.DialogResultEnum.Yes);            
-            string expectedResult = "Folder created successfully.";
+            string expectedResult = ResourceMessages.Services_SetRepo_CreationSuccess;
 
             // Act
             await ProgramTest.MainTestAsync(new string[6] { "set-repo", repoDirectory2,
@@ -95,10 +96,10 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
             // Arrange
             var repoDirectory3 = Path.Combine(_commandTestFixture.TempDirectory, "repo3");
             Directory.CreateDirectory(repoDirectory3);
-            string expectedRepositoryInfo = $"Current Repository Location: {_commandTestFixture.RepoDirectory}"; // current applied repo check
-            string expectedQuestion = "Warning: A repository is already set in another location. Do you want to overwrite the current location set?";
+            string expectedRepositoryInfo = string.Format(ResourceMessages.Handlers_SetRepo_CurrentRepoInfo, _commandTestFixture.RepoDirectory);
+            string expectedQuestion = ResourceMessages.Handlers_SetRepo_Warning;
             Interactions.DialogResultRequest.Enqueue(Domain.Entities.Enums.DialogResultEnum.No); // User Says No            
-            string expectedResult = "No repository changes.";
+            string expectedResult = ResourceMessages.Handlers_SetRepo_Cancel;
 
             // Act
             await ProgramTest.MainTestAsync(new string[6] { "set-repo", repoDirectory3,
@@ -129,10 +130,10 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
             // Arrange
             var repoDirectoryDot = ".";
             Directory.CreateDirectory(repoDirectoryDot);
-            string expectedRepositoryInfo = $"Current Repository Location: {_commandTestFixture.RepoDirectory}"; // current applied repo check
-            string expectedQuestion = "Warning: A repository is already set in another location. Do you want to overwrite the current location set?";
+            string expectedRepositoryInfo = string.Format(ResourceMessages.Handlers_SetRepo_CurrentRepoInfo, _commandTestFixture.RepoDirectory);
+            string expectedQuestion = ResourceMessages.Handlers_SetRepo_Warning;
             Interactions.DialogResultRequest.Enqueue(Domain.Entities.Enums.DialogResultEnum.Yes);            
-            string expectedResult = "Folder created successfully.";
+            string expectedResult = ResourceMessages.Services_SetRepo_CreationSuccess;
 
             // Act
             await ProgramTest.MainTestAsync(new string[6] { "set-repo", repoDirectoryDot,

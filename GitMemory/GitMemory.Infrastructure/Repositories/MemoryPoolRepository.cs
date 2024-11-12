@@ -1,4 +1,5 @@
-﻿using GitMemory.Domain.Entities.Memories;
+﻿using GitMemory.CultureConfig;
+using GitMemory.Domain.Entities.Memories;
 using GitMemory.Domain.Repositories;
 using System.Text.Json;
 
@@ -22,7 +23,7 @@ namespace GitMemory.Infrastructure.Repositories
             {
                 if (!File.Exists(_filePath))
                 {
-                    throw new FileNotFoundException($"Json configuration file not found at {_filePath}");
+                    throw new FileNotFoundException(string.Format(ResourceMessages.Repository_MemoryPool_Read_JsonNotFound, _filePath));
                 }
 
                 string jsonContent = File.ReadAllText(_filePath);
@@ -34,7 +35,7 @@ namespace GitMemory.Infrastructure.Repositories
             catch (Exception ex)
             {
                 _errorLogRepository.Log(ex);
-                throw new Exception("Unable to read git-memory.json");
+                throw new Exception(ResourceMessages.Repository_MemoryPool_Read_UnhandledException);
             }
         }
 
@@ -44,7 +45,7 @@ namespace GitMemory.Infrastructure.Repositories
             {
                 if (memoryPool == null)
                 {
-                    throw new ArgumentNullException(nameof(memoryPool), "Memory pool cannot be null");
+                    throw new ArgumentNullException(nameof(memoryPool), ResourceMessages.Repository_MemoryPool_Write_NullException);
                 }
 
                 var options = new JsonSerializerOptions
@@ -58,7 +59,7 @@ namespace GitMemory.Infrastructure.Repositories
             catch (Exception ex)
             {
                 _errorLogRepository.Log(ex);
-                throw new Exception("Unable to read git-memory.json");
+                throw new Exception(ResourceMessages.Repository_MemoryPool_Write_UnhandledException);
             }
         }
     }

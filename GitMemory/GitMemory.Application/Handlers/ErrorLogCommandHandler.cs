@@ -1,4 +1,5 @@
 ﻿using GitMemory.Application.Commands;
+using GitMemory.CultureConfig;
 using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
 using GitMemory.Domain.Repositories;
@@ -31,11 +32,11 @@ namespace GitMemory.Application.Handlers
                     return await _settingsService.DisableErrorLogs();                    
                 }
                 else
-                    return await Task.FromResult(new CommandResponse($"Invalid parameter {request.Parameters.FirstOrDefault()}", ResponseTypeEnum.Error));
+                    return await Task.FromResult(new CommandResponse(string.Format(ResourceMessages.Handlers_ErrorLog_InvalidParameter, request.Parameters.FirstOrDefault()), ResponseTypeEnum.Error));
             }
             
             var errorLogStatus = _settingsService.ReadGlobalSettings().IsErrorLogsEnabled ? "ENABLED" : "DISABLED";            
-            return await Task.FromResult(new CommandResponse($"Error Log is currently {errorLogStatus}. Use `--enable` or `--disable` to change the status.", ResponseTypeEnum.Info));
+            return await Task.FromResult(new CommandResponse(string.Format(ResourceMessages.Handlers_ErrorLog_StatusMessage, errorLogStatus), ResponseTypeEnum.Info));
         }
     }
 }

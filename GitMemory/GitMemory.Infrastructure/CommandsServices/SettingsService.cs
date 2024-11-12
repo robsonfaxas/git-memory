@@ -1,4 +1,5 @@
-﻿using GitMemory.Domain.Entities;
+﻿using GitMemory.CultureConfig;
+using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
 using GitMemory.Domain.Repositories;
 
@@ -15,7 +16,7 @@ namespace GitMemory.Infrastructure.CommandsServices
         }
         public void HideFile(string folderPath)
         {
-            _userSettingsRepository.HideFile(folderPath);
+            _userSettingsRepository.HideFolder(folderPath);
         }
 
         // global settings
@@ -48,7 +49,7 @@ namespace GitMemory.Infrastructure.CommandsServices
             try
             {
                 WriteGlobalSettingsValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ErrorLogItemKey, "TRUE", "");
-                return Task.FromResult(new CommandResponse($"Error Logs enabled.", ResponseTypeEnum.Info));
+                return Task.FromResult(new CommandResponse(ResourceMessages.Services_Settings_EnableErrorLogResult, ResponseTypeEnum.Info));
             }
             catch {
                 return Task.FromResult(new CommandResponse("EnableErrorLogs: Unable to enable error logs", ResponseTypeEnum.Error));
@@ -61,7 +62,7 @@ namespace GitMemory.Infrastructure.CommandsServices
             try
             {
                 WriteGlobalSettingsValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ErrorLogItemKey, "FALSE", "");
-                return Task.FromResult(new CommandResponse($"Error Logs disabled.", ResponseTypeEnum.Info));
+                return Task.FromResult(new CommandResponse(ResourceMessages.Services_Settings_DisableErrorLogResult, ResponseTypeEnum.Info));
             }
             catch
             {
@@ -82,6 +83,14 @@ namespace GitMemory.Infrastructure.CommandsServices
             return _userSettingsRepository.CreateUserSettingsJson(folder);
         }
 
+        public void WriteValue(string section, string property, string value, string defaultValue)
+        {
+            _globalSettingsRepository.WriteValue(section, property, value, defaultValue);
+        }
 
+        public string? ReadValue(string section, string property)
+        {
+            return _globalSettingsRepository.ReadValue(section, property);
+        }
     }
 }

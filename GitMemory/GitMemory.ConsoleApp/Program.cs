@@ -31,7 +31,6 @@ public class Program
                 services.AddTransient<ErrorLogCommand>();
                 services.AddScoped<CommandContextConfiguration>();
                 services.AddTransient<IGitCommandFactory, GitCommandFactory>();
-
                 services.AddApplicationServices();
             });
 }

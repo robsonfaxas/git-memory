@@ -1,20 +1,21 @@
 ﻿using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
-using GitMemory.Domain.Repositories;
 using GitMemory.Domain.Service.Unpick;
 using GitMemory.Infrastructure.CommandsServices.Unpick.UnpickStrategy;
 using GitMemory.Domain.Entities.Memories;
+using GitMemory.Domain.Service;
+using GitMemory.CultureConfig;
 namespace GitMemory.Infrastructure.CommandsServices.Unpick
 {
     public class UnpickCommandService : IUnpickCommandService
     {
-        private readonly IMemoryPoolRepository _memoryPoolRepository;
-        private readonly IErrorLogRepository _errorLogRepository;
+        private readonly IMemoryPoolService _memoryPoolService;
+        private readonly IErrorLogService _errorLogService;
         private IUnpickStrategy _pickStrategy = null!;
-        public UnpickCommandService(IMemoryPoolRepository memoryPoolRepository, IErrorLogRepository errorLogRepository)
+        public UnpickCommandService(IMemoryPoolService memoryPoolService, IErrorLogService errorLogService)
         {
-            _memoryPoolRepository = memoryPoolRepository;
-            _errorLogRepository = errorLogRepository;
+            _memoryPoolService = memoryPoolService;
+            _errorLogService = errorLogService;
         }
 
         public Task<CommandResponse> ExecuteCommand(List<string> commands)
@@ -22,12 +23,12 @@ namespace GitMemory.Infrastructure.CommandsServices.Unpick
             try
             {
                 if (commands == null || commands.Count == 0)
-                    return Task.FromResult(new CommandResponse("No arguments provided.", ResponseTypeEnum.Error));
-                var memoryPool = _memoryPoolRepository.ReadMemoryPool() ?? new MemoryPool();
+                    return Task.FromResult(new CommandResponse(ResourceMessages.Services_Unpick_MissingArgument, ResponseTypeEnum.Error));
+                var memoryPool = _memoryPoolService.ReadMemoryPool() ?? new MemoryPool();
                 if (commands.FirstOrDefault()!.Equals(".") || commands.FirstOrDefault()!.ToLower().Equals("--all"))
-                    _pickStrategy = new UnpickAll(_memoryPoolRepository, _errorLogRepository);
+                    _pickStrategy = new UnpickAll(_memoryPoolService, _errorLogService);
                 else
-                    _pickStrategy = new UnpickByList(_memoryPoolRepository, _errorLogRepository);                
+                    _pickStrategy = new UnpickByList(_memoryPoolService, _errorLogService);                
                 return _pickStrategy.Execute(commands, memoryPool);
             }
             catch (Exception ex)

@@ -29,7 +29,7 @@ namespace GitMemory.Application.Configuration
             services.AddScoped<IUnpickCommandService, UnpickCommandService>();
             services.AddScoped<ISetRepoCommandService, SetRepoCommandService>();
             services.AddScoped<IGitMemoryGlobalSettings, GitMemoryGlobalSettings>();
-            services.AddScoped<IUserSettings, UserSettings>();
+            services.AddScoped<IUserSettings, UserSettingsRepository>();
             services.AddScoped<ISettingsService, SettingsService>();
             services.AddScoped<IMemoryPoolService, MemoryPoolService>();
             services.AddScoped<IMemoryPoolRepository, MemoryPoolRepository>();

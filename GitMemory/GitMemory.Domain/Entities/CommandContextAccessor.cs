@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GitMemory.CultureConfig;
 
 namespace GitMemory.Domain.Entities
 {
@@ -12,7 +8,7 @@ namespace GitMemory.Domain.Entities
         
         public static CommandContextConfiguration Current
         {
-            get => _context.Value ?? throw new InvalidOperationException("CommandContextConfiguration is not set.");
+            get => _context.Value ?? throw new InvalidOperationException(ResourceMessages.CommandContextAccessor_Configuration_NotSet);
             set => _context.Value = value;
         }
     }

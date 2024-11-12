@@ -1,4 +1,5 @@
-﻿using GitMemory.Domain.Entities;
+﻿using GitMemory.CultureConfig;
+using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Memories;
 using GitMemory.Domain.Repositories;
 using System;
@@ -43,7 +44,7 @@ namespace GitMemory.Infrastructure.Repositories
             }
             catch (Exception)
             {
-                throw new Exception("Unable to write in error log file. Execute the command 'git memory errorlog --disable' to turn error logs off");
+                throw new Exception(ResourceMessages.Repository_ErrorLog_Log_UnhandledException);
             }
         }
 
