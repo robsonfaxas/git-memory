@@ -1,19 +1,20 @@
-﻿using GitMemory.Domain.Entities;
+﻿using GitMemory.CultureConfig;
+using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
 using GitMemory.Domain.Entities.Memories;
-using GitMemory.Domain.Repositories;
+using GitMemory.Domain.Service;
 using LibGit2Sharp;
 
 namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
 {
     internal class PickByList : IPickStrategy
     {
-        private readonly IMemoryPoolRepository _memoryPoolRepository;
-        private readonly IErrorLogRepository _errorLogRepository;
-        public PickByList(IMemoryPoolRepository memoryPoolRepository, IErrorLogRepository errorLogRepository)
+        private readonly IMemoryPoolService _memoryPoolService;
+        private readonly IErrorLogService _errorLogService;
+        public PickByList(IMemoryPoolService memoryPoolRepository, IErrorLogService errorLogService)
         {
-            _memoryPoolRepository = memoryPoolRepository;
-            _errorLogRepository = errorLogRepository;
+            _memoryPoolService = memoryPoolRepository;
+            _errorLogService = errorLogService;
         }
         // <hash> <hash>: read all the hashes, one by one, and check if they're valid commits. 
         //                if any of them are not valid, return an error with the wrong hash
@@ -29,7 +30,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
                 {
                     var commit = GetCommit(hash);
                     if (commit == null)
-                        throw new ArgumentException($"Invalid hash: {hash}");
+                        throw new ArgumentException(string.Format(ResourceMessages.Services_PickByList_InvalidHash, hash));
                     else
                         commits.Add(commit);
                 }
@@ -43,17 +44,18 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
                         AddIfNotExists(repository.Unstaged, repository.Staged, commit);                        
                     
                 }
-                _memoryPoolRepository.WriteMemoryPool(memoryPool);
-                return Task.FromResult(new CommandResponse("Commits added.", ResponseTypeEnum.Info));
+                _memoryPoolService.WriteMemoryPool(memoryPool);
+                return Task.FromResult(new CommandResponse(ResourceMessages.Services_Pick_Success, ResponseTypeEnum.Info));
             }
             catch (ArgumentException ex)
             {
+                _errorLogService.Log(ex);
                 return Task.FromResult(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
             }
             catch (Exception ex)
             {
-                _errorLogRepository.Log(ex);
-                return Task.FromResult(new CommandResponse("An error occurred while attempting to retrieve commits. Please refer to the error log for more details.", ResponseTypeEnum.Error));
+                _errorLogService.Log(ex);
+                return Task.FromResult(new CommandResponse(ResourceMessages.Services_PickByList_UnhandledException, ResponseTypeEnum.Error));
             }
                 
         }
@@ -63,7 +65,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
             string repoPath = Repository.Discover(CommandContextAccessor.Current.CurrentDirectory);
             if (string.IsNullOrEmpty(repoPath))
             {
-                throw new ArgumentException("Not a valid git repository.");
+                throw new ArgumentException(ResourceMessages.Services_PickByList_InvalidGitRepository);
             }
             if (!memoryPool.GitRepositories
                     .Where(p => p.GitRepositoryPath.ToLower().StartsWith(repoPath.ToLower()))
@@ -79,7 +81,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
             string repoPath = Repository.Discover(CommandContextAccessor.Current.CurrentDirectory);
             if (string.IsNullOrEmpty(repoPath))
             {
-                throw new ArgumentException("Not a valid git repository.");                                
+                throw new ArgumentException(ResourceMessages.Services_PickByList_InvalidGitRepository);                               
             }
             using var repo = new Repository(repoPath);
             try
@@ -94,7 +96,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
             }
             catch (LibGit2SharpException)
             {
-                throw new ArgumentException($"Error looking up commit {hash}");
+                throw new ArgumentException(string.Format(ResourceMessages.Services_PickByList_GetCommit_Error, hash));
             }
         }
 

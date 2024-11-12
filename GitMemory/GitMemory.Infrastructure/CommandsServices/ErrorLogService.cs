@@ -1,5 +1,4 @@
-﻿using GitMemory.Domain.Entities.Memories;
-using GitMemory.Domain.Repositories;
+﻿using GitMemory.Domain.Repositories;
 using GitMemory.Domain.Service;
 
 namespace GitMemory.Infrastructure.CommandsServices

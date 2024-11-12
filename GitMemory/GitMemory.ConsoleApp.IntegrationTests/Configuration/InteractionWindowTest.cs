@@ -1,11 +1,6 @@
 ﻿using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
 using GitMemory.Domain.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GitMemory.ConsoleApp.IntegrationTests.Configuration
 {

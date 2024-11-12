@@ -1,4 +1,5 @@
-﻿using GitMemory.Domain.Entities;
+﻿using GitMemory.CultureConfig;
+using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
 using GitMemory.Domain.Repositories;
 
@@ -23,7 +24,7 @@ namespace GitMemory.Infrastructure.Services
             }
             catch (Exception)
             {
-                throw new Exception($"Error creating {FileName} file");
+                throw new Exception(ResourceMessages.Repository_GlobalSettings_CreateJson_UnhandledException);
             }
         }
 
@@ -121,7 +122,7 @@ namespace GitMemory.Infrastructure.Services
             }
             catch (Exception) 
             {
-                throw new Exception("Unable to write value in Global Configuration.");
+                throw new Exception(ResourceMessages.Repository_GlobalSettings_Write_UnhandledException);
             }
         }
     }

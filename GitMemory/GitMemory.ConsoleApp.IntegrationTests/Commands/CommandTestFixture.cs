@@ -1,6 +1,4 @@
 ﻿using GitMemory.ConsoleApp.IntegrationTests.Configuration;
-using System.Security.AccessControl;
-using System.Security.Principal;
 
 namespace GitMemory.ConsoleApp.IntegrationTests.Commands
 {

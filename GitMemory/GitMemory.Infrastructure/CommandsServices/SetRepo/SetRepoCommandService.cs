@@ -1,4 +1,5 @@
-﻿using GitMemory.Domain.Entities;
+﻿using GitMemory.CultureConfig;
+using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
 using GitMemory.Domain.Repositories;
 using GitMemory.Domain.Service.SetRepo;
@@ -7,12 +8,10 @@ namespace GitMemory.Infrastructure.CommandsServices.SetRepo
 {
     public class SetRepoCommandService : ISetRepoCommandService
     {
-        private readonly IGitMemoryGlobalSettings _globalSettingsService;
-        private readonly IUserSettings _repositorySettingsService;
-        public SetRepoCommandService(IGitMemoryGlobalSettings globalSettingsService, IUserSettings repositorySettingsService)
+        private readonly ISettingsService _settingsService;
+        public SetRepoCommandService(ISettingsService repositorySettingsService)
         {
-            _globalSettingsService = globalSettingsService;
-            _repositorySettingsService = repositorySettingsService;
+            _settingsService = repositorySettingsService;
         }
 
         /// <summary>
@@ -27,7 +26,7 @@ namespace GitMemory.Infrastructure.CommandsServices.SetRepo
             try
             {
                 if (commands == null || commands.Count == 0)
-                    return Task.FromResult(new CommandResponse("No arguments provided.", ResponseTypeEnum.Error));
+                    return Task.FromResult(new CommandResponse(ResourceMessages.Services_SetRepo_MissingArgument, ResponseTypeEnum.Error));
                 string repositoryFolder = "";
                 if (commands.First().Equals("."))
                     repositoryFolder = CommandContextAccessor.Current.CurrentDirectory;
@@ -35,22 +34,22 @@ namespace GitMemory.Infrastructure.CommandsServices.SetRepo
                     repositoryFolder = commands.First();
                 if (repositoryFolder != null && Directory.Exists(repositoryFolder))
                 {
-                    var settingsDirectoryInnerFolder = _repositorySettingsService.CreateUserSettingsFolder(repositoryFolder);
+                    var settingsDirectoryInnerFolder = _settingsService.CreateUserSettingsFolder(repositoryFolder);
                     if (settingsDirectoryInnerFolder != null)
                     {
-                        _repositorySettingsService.HideFile(settingsDirectoryInnerFolder.FullName);
-                        var configurationJsonFile = _repositorySettingsService.CreateUserSettingsJson(settingsDirectoryInnerFolder.FullName);
-                        _globalSettingsService.CreateGlobalSettingsJson();
-                        _globalSettingsService.WriteValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.RepositoryLocationItemKey, repositoryFolder, "");
-                        _globalSettingsService.WriteValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ConfigurationFileLocationItemKey, configurationJsonFile.FullName, "");
-                        _globalSettingsService.WriteValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ErrorLogItemKey, "FALSE", "");
-                        return Task.FromResult(new CommandResponse($"Folder created successfully."));
+                        _settingsService.HideFile(settingsDirectoryInnerFolder.FullName);
+                        var configurationJsonFile = _settingsService.CreateUserSettingsJson(settingsDirectoryInnerFolder.FullName);
+                        _settingsService.CreateGlobalSettingsJson();
+                        _settingsService.WriteValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.RepositoryLocationItemKey, repositoryFolder, "");
+                        _settingsService.WriteValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ConfigurationFileLocationItemKey, configurationJsonFile.FullName, "");
+                        _settingsService.WriteValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ErrorLogItemKey, "FALSE", "");
+                        return Task.FromResult(new CommandResponse(ResourceMessages.Services_SetRepo_CreationSuccess));
                     }
                     else
-                        return Task.FromResult(new CommandResponse($"Error creating/reading directory in {repositoryFolder}", ResponseTypeEnum.Error));
+                        return Task.FromResult(new CommandResponse(string.Format(ResourceMessages.Services_SetRepo_ErrorHandlingDirectory, repositoryFolder), ResponseTypeEnum.Error));
                 }
                 else
-                    return Task.FromResult(new CommandResponse("Directory not found.", ResponseTypeEnum.Error));
+                    return Task.FromResult(new CommandResponse(ResourceMessages.Services_SetRepo_DirectoryNotFound, ResponseTypeEnum.Error));
             }
             catch (Exception ex)
             {

@@ -1,7 +1,7 @@
-﻿using GitMemory.Domain.Entities;
+﻿using GitMemory.CultureConfig;
+using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
 using GitMemory.Domain.UI;
-using MediatR;
 
 namespace GitMemory.ConsoleApp
 {
@@ -74,7 +74,7 @@ namespace GitMemory.ConsoleApp
         {
             if (response is not null && !string.IsNullOrEmpty(response.Message))
             {
-                response.Message += " Type 'Y' (yes) to proceed or any other key to cancel";
+                response.Message += " " + ResourceMessages.UserInteraction_OkCancel_Options;
                 Write(response);
             }
             string? answer;
@@ -90,7 +90,7 @@ namespace GitMemory.ConsoleApp
         {
             if (response is not null && !string.IsNullOrEmpty(response.Message))
             {
-                response.Message += "Answer 'Y' (yes) or 'N' (no) to proceed.";
+                response.Message += ResourceMessages.UserInteraction_YesNo_Options;
                 Write(response);
             }
             string? answer;
@@ -103,7 +103,7 @@ namespace GitMemory.ConsoleApp
                     else if (answer.ToUpper().Equals("N"))
                         return DialogResultEnum.No;
                     else
-                        Write(new CommandResponse($"Invalid Command. Answer 'Y' (yes) or 'N' (no) to proceed.", ResponseTypeEnum.Info));
+                        Write(new CommandResponse(ResourceMessages.UserInteraction_YesNo_Invalid, ResponseTypeEnum.Info));
 
             } while (answer == null || !(answer != null && (answer.ToUpper().Equals("Y") || answer.ToUpper().Equals("N"))));
 
@@ -114,7 +114,7 @@ namespace GitMemory.ConsoleApp
         {
             if (response is not null && !string.IsNullOrEmpty(response.Message))
             {
-                response.Message += "Answer 'Y' (yes), 'N' (no) to proceed or any other key to Cancel.";
+                response.Message += ResourceMessages.UserInteraction_YesNoCancel_Options;
                 Write(response);
             }
             var answer = Read();

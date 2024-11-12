@@ -1,5 +1,6 @@
 ﻿using GitMemory.Application.Commands;
 using GitMemory.Application.Interfaces;
+using GitMemory.CultureConfig;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GitMemory.ConsoleApp
@@ -30,7 +31,7 @@ namespace GitMemory.ConsoleApp
                     return _serviceProvider.GetRequiredService<ErrorLogCommand>()
                         .Initialize(parameters);
                 default:
-                    throw new ArgumentException("Invalid command.");
+                    throw new ArgumentException(ResourceMessages.CommandUI_CommandFactory_Invalid);
             }
         }
     }

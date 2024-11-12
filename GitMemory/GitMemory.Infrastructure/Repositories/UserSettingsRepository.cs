@@ -1,16 +1,12 @@
-﻿using GitMemory.Domain.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GitMemory.CultureConfig;
+using GitMemory.Domain.Repositories;
 
 namespace GitMemory.Infrastructure.Services
 {
-    public class UserSettings : IUserSettings
+    public class UserSettingsRepository : IUserSettings
     {
         private readonly IErrorLogRepository _errorLogRepository;
-        public UserSettings(IErrorLogRepository errorLogRepository)
+        public UserSettingsRepository(IErrorLogRepository errorLogRepository)
         {
             _errorLogRepository = errorLogRepository;
         }
@@ -26,7 +22,7 @@ namespace GitMemory.Infrastructure.Services
             catch (Exception ex)
             {
                 _errorLogRepository.Log(ex);
-                throw new Exception($"Error creating file in git-memory.json in {folder}");
+                throw new Exception(string.Format(ResourceMessages.Repository_UserSettings_CreateJson_UnhandledException,folder));
             }
         }
 
@@ -42,11 +38,11 @@ namespace GitMemory.Infrastructure.Services
             catch (Exception ex)
             {
                 _errorLogRepository.Log(ex);
-                throw new Exception($"Error creating directory in {folderPath}");
+                throw new Exception(string.Format(ResourceMessages.Repository_UserSettings_CreateFolder_UnhandledException, folderPath));
             }
         }
 
-        public void HideFile(string folderPath)
+        public void HideFolder(string folderPath)
         {
             try
             {
@@ -56,7 +52,7 @@ namespace GitMemory.Infrastructure.Services
             catch (Exception ex)
             {
                 _errorLogRepository.Log(ex);
-                throw new Exception($"Error trying to hide folder {folderPath}");
+                throw new Exception(string.Format(ResourceMessages.Repository_UserSettings_HideFolder_UnhandledException, folderPath));
             }
         }
     }

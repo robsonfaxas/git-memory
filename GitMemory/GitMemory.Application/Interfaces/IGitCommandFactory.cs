@@ -1,6 +1,4 @@
-﻿using GitMemory.Domain.Entities;
-
-namespace GitMemory.Application.Interfaces
+﻿namespace GitMemory.Application.Interfaces
 {
     public interface IGitCommandFactory
     {

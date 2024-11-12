@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GitMemory.CultureConfig\GitMemory.CultureConfig.csproj" />
+  </ItemGroup>
+
 </Project>

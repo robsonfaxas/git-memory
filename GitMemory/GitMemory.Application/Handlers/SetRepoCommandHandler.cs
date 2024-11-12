@@ -1,4 +1,5 @@
 ﻿using GitMemory.Application.Commands;
+using GitMemory.CultureConfig;
 using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
 using GitMemory.Domain.Repositories;
@@ -24,10 +25,10 @@ namespace GitMemory.Application.Handlers
             if (!string.IsNullOrEmpty(globalSettings.RepositoryLocation) && 
                 !globalSettings.RepositoryLocation.Equals(request.Parameters.FirstOrDefault()))
             {
-                CommandContextAccessor.Current.InteractionWindow.Write(new CommandResponse($"Current Repository Location: {globalSettings.RepositoryLocation}", ResponseTypeEnum.Info));
-                var dialogResult = CommandContextAccessor.Current.InteractionWindow.Read(DialogButtonsEnum.YesNo, new CommandResponse("Warning: A repository is already set in another location. Do you want to overwrite the current location set?", ResponseTypeEnum.Warning));                
+                CommandContextAccessor.Current.InteractionWindow.Write(new CommandResponse(string.Format(ResourceMessages.Handlers_SetRepo_CurrentRepoInfo,globalSettings.RepositoryLocation), ResponseTypeEnum.Info));
+                var dialogResult = CommandContextAccessor.Current.InteractionWindow.Read(DialogButtonsEnum.YesNo, new CommandResponse(ResourceMessages.Handlers_SetRepo_Warning, ResponseTypeEnum.Warning));                
                 if (dialogResult == DialogResultEnum.No)
-                    return await Task.FromResult(new CommandResponse("No repository changes.", ResponseTypeEnum.Info));
+                    return await Task.FromResult(new CommandResponse(ResourceMessages.Handlers_SetRepo_Cancel, ResponseTypeEnum.Info));
             }
             return await _setRepoCommandService.ExecuteCommand(request.Parameters);
         }

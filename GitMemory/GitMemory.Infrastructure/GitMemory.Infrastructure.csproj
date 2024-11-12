@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GitMemory.CultureConfig\GitMemory.CultureConfig.csproj" />
     <ProjectReference Include="..\GitMemory.Domain\GitMemory.Domain.csproj" />
   </ItemGroup>
 

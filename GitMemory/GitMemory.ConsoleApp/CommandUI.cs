@@ -1,5 +1,5 @@
-﻿using GitMemory.Application.Commands;
-using GitMemory.Application.Interfaces;
+﻿using GitMemory.Application.Interfaces;
+using GitMemory.CultureConfig;
 using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
 using GitMemory.Domain.UI;
@@ -15,7 +15,7 @@ namespace GitMemory.ConsoleApp
         private CommandContextConfiguration _contextConfiguration;
 
         /// <summary>
-        /// 1º item is the command
+        /// First item is the command
         /// All the other items are arguments/parameters to the method
         /// </summary>
         public List<string> Args { get; set; } = new List<string>();
@@ -52,7 +52,7 @@ namespace GitMemory.ConsoleApp
             }
             else
             {
-                throw new ArgumentException("Command not provided.");
+                throw new ArgumentException(ResourceMessages.CommandUI_MissingCommand);
             }
         }
 
@@ -87,7 +87,7 @@ namespace GitMemory.ConsoleApp
                     if (Directory.Exists(arg))
                         return arg;
                     else
-                        throw new ArgumentException("GlobalSettings folder does not exist");
+                        throw new ArgumentException(ResourceMessages.CommandUI_InvalidGlobalSettingsFolder);
                 }
             }
             return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) ?? "";
@@ -116,7 +116,7 @@ namespace GitMemory.ConsoleApp
                     if (Directory.Exists(arg))
                         return arg;
                     else
-                        throw new ArgumentException("CurrentDirectory folder does not exist");
+                        throw new ArgumentException(ResourceMessages.CommandUI_InvalidCurrentDirectoryFolder);
                 }
             }
             return Directory.GetCurrentDirectory() ?? "";
