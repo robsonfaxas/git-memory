@@ -421,6 +421,51 @@ namespace GitMemory.CultureConfig {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid hash: &apos;{0}&apos;..
+        /// </summary>
+        public static string Services_Stage_InvalidHash {
+            get {
+                return ResourceManager.GetString("Services.Stage.InvalidHash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing arguments..
+        /// </summary>
+        public static string Services_Stage_MissingArguments {
+            get {
+                return ResourceManager.GetString("Services.Stage.MissingArguments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commit staged: {0}.
+        /// </summary>
+        public static string Services_Stage_StagedCommit {
+            get {
+                return ResourceManager.GetString("Services.Stage.StagedCommit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commit(s) staged with success!.
+        /// </summary>
+        public static string Services_Stage_Success {
+            get {
+                return ResourceManager.GetString("Services.Stage.Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No commits were staged..
+        /// </summary>
+        public static string Services_Stage_SuccessZeroCommits {
+            get {
+                return ResourceManager.GetString("Services.Stage.SuccessZeroCommits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No arguments provided..
         /// </summary>
         public static string Services_Unpick_MissingArgument {
@@ -480,6 +525,51 @@ namespace GitMemory.CultureConfig {
         public static string Services_UnpickByList_UnhandledException {
             get {
                 return ResourceManager.GetString("Services.UnpickByList.UnhandledException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid hash: &apos;{0}&apos;..
+        /// </summary>
+        public static string Services_Unstage_InvalidHash {
+            get {
+                return ResourceManager.GetString("Services.Unstage.InvalidHash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing arguments..
+        /// </summary>
+        public static string Services_Unstage_MissingArguments {
+            get {
+                return ResourceManager.GetString("Services.Unstage.MissingArguments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commit(s) unstaged with success!.
+        /// </summary>
+        public static string Services_Unstage_Success {
+            get {
+                return ResourceManager.GetString("Services.Unstage.Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No commits were unstaged..
+        /// </summary>
+        public static string Services_Unstage_SuccessZeroCommits {
+            get {
+                return ResourceManager.GetString("Services.Unstage.SuccessZeroCommits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commit unstaged: {0}.
+        /// </summary>
+        public static string Services_Unstage_UnstagedCommit {
+            get {
+                return ResourceManager.GetString("Services.Unstage.UnstagedCommit", resourceCulture);
             }
         }
         

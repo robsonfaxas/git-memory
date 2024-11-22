@@ -30,6 +30,8 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Configuration
                 services.AddTransient<PickCommand>();
                 services.AddTransient<UnpickCommand>();
                 services.AddTransient<ErrorLogCommand>();
+                services.AddTransient<StageCommand>();
+                services.AddTransient<UnstageCommand>();
                 services.AddScoped<CommandContextConfiguration>();
                 services.AddTransient<IGitCommandFactory, GitCommandFactory>();
 
