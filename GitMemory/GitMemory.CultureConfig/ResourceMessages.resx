@@ -237,6 +237,21 @@
   <data name="Services.Settings.EnableErrorLogResult" xml:space="preserve">
     <value>Error Logs enabled.</value>
   </data>
+  <data name="Services.Stage.InvalidHash" xml:space="preserve">
+    <value>Invalid hash: '{0}'.</value>
+  </data>
+  <data name="Services.Stage.MissingArguments" xml:space="preserve">
+    <value>Missing arguments.</value>
+  </data>
+  <data name="Services.Stage.StagedCommit" xml:space="preserve">
+    <value>Commit staged: {0}</value>
+  </data>
+  <data name="Services.Stage.Success" xml:space="preserve">
+    <value>Commit(s) staged with success!</value>
+  </data>
+  <data name="Services.Stage.SuccessZeroCommits" xml:space="preserve">
+    <value>No commits were staged.</value>
+  </data>
   <data name="Services.Unpick.MissingArgument" xml:space="preserve">
     <value>No arguments provided.</value>
   </data>
@@ -257,6 +272,21 @@
   </data>
   <data name="Services.UnpickByList.UnhandledException" xml:space="preserve">
     <value>An error occurred while attempting to unpick commits. Please refer to the error log for more details.</value>
+  </data>
+  <data name="Services.Unstage.InvalidHash" xml:space="preserve">
+    <value>Invalid hash: '{0}'.</value>
+  </data>
+  <data name="Services.Unstage.MissingArguments" xml:space="preserve">
+    <value>Missing arguments.</value>
+  </data>
+  <data name="Services.Unstage.Success" xml:space="preserve">
+    <value>Commit(s) unstaged with success!</value>
+  </data>
+  <data name="Services.Unstage.SuccessZeroCommits" xml:space="preserve">
+    <value>No commits were unstaged.</value>
+  </data>
+  <data name="Services.Unstage.UnstagedCommit" xml:space="preserve">
+    <value>Commit unstaged: {0}</value>
   </data>
   <data name="UserInteraction.OkCancel.Options" xml:space="preserve">
     <value>Type 'Y' (yes) to proceed or any other key to cancel.</value>

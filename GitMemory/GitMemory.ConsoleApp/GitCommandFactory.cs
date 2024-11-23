@@ -30,6 +30,12 @@ namespace GitMemory.ConsoleApp
                 case "errorlog":
                     return _serviceProvider.GetRequiredService<ErrorLogCommand>()
                         .Initialize(parameters);
+                case "stage":
+                    return _serviceProvider.GetRequiredService<StageCommand>()
+                        .Initialize(parameters);
+                case "unstage":
+                    return _serviceProvider.GetRequiredService<UnstageCommand>()
+                        .Initialize(parameters);
                 default:
                     throw new ArgumentException(ResourceMessages.CommandUI_CommandFactory_Invalid);
             }
