@@ -25,7 +25,7 @@ public class Program
                 services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
                 services.AddScoped<ICommandUI, CommandUI>();
                 services.AddSingleton<IInteractionWindow, UserInteraction>();
-                services.AddTransient<SetRepoCommand>();
+                services.AddTransient<SetBrainCommand>();
                 services.AddTransient<PickCommand>();
                 services.AddTransient<UnpickCommand>();
                 services.AddTransient<ErrorLogCommand>();

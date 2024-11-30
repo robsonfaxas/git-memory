@@ -3,7 +3,7 @@ using GitMemory.CultureConfig;
 using GitMemory.Domain.Entities;
 using GitMemory.Domain.Entities.Enums;
 using GitMemory.Domain.Repositories;
-using GitMemory.Domain.Service.SetRepo;
+using GitMemory.Domain.Service.SetBrain;
 using MediatR;
 
 namespace GitMemory.Application.Handlers
@@ -12,7 +12,7 @@ namespace GitMemory.Application.Handlers
     {
         private readonly ISettingsService _settingsService;        
 
-        public ErrorLogCommandHandler(ISetRepoCommandService commandService, ISettingsService settingsService)
+        public ErrorLogCommandHandler(ISetBrainCommandService commandService, ISettingsService settingsService)
         {
             _settingsService = settingsService;
         }

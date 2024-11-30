@@ -162,27 +162,27 @@ namespace GitMemory.CultureConfig {
         /// <summary>
         ///   Looks up a localized string similar to No repository changes..
         /// </summary>
-        public static string Handlers_SetRepo_Cancel {
+        public static string Handlers_SetBrain_Cancel {
             get {
-                return ResourceManager.GetString("Handlers.SetRepo.Cancel", resourceCulture);
+                return ResourceManager.GetString("Handlers.SetBrain.Cancel", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Current Repository Location: {0}.
         /// </summary>
-        public static string Handlers_SetRepo_CurrentRepoInfo {
+        public static string Handlers_SetBrain_CurrentRepoInfo {
             get {
-                return ResourceManager.GetString("Handlers.SetRepo.CurrentRepoInfo", resourceCulture);
+                return ResourceManager.GetString("Handlers.SetBrain.CurrentRepoInfo", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Warning: A repository is already set in another location. Do you want to overwrite the current location set?.
         /// </summary>
-        public static string Handlers_SetRepo_Warning {
+        public static string Handlers_SetBrain_Warning {
             get {
-                return ResourceManager.GetString("Handlers.SetRepo.Warning", resourceCulture);
+                return ResourceManager.GetString("Handlers.SetBrain.Warning", resourceCulture);
             }
         }
         
@@ -369,36 +369,36 @@ namespace GitMemory.CultureConfig {
         /// <summary>
         ///   Looks up a localized string similar to Memories Repository created successfully..
         /// </summary>
-        public static string Services_SetRepo_CreationSuccess {
+        public static string Services_SetBrain_CreationSuccess {
             get {
-                return ResourceManager.GetString("Services.SetRepo.CreationSuccess", resourceCulture);
+                return ResourceManager.GetString("Services.SetBrain.CreationSuccess", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Directory not found..
         /// </summary>
-        public static string Services_SetRepo_DirectoryNotFound {
+        public static string Services_SetBrain_DirectoryNotFound {
             get {
-                return ResourceManager.GetString("Services.SetRepo.DirectoryNotFound", resourceCulture);
+                return ResourceManager.GetString("Services.SetBrain.DirectoryNotFound", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Error creating/reading directory in {0}.
         /// </summary>
-        public static string Services_SetRepo_ErrorHandlingDirectory {
+        public static string Services_SetBrain_ErrorHandlingDirectory {
             get {
-                return ResourceManager.GetString("Services.SetRepo.ErrorHandlingDirectory", resourceCulture);
+                return ResourceManager.GetString("Services.SetBrain.ErrorHandlingDirectory", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No arguments provided..
         /// </summary>
-        public static string Services_SetRepo_MissingArgument {
+        public static string Services_SetBrain_MissingArgument {
             get {
-                return ResourceManager.GetString("Services.SetRepo.MissingArgument", resourceCulture);
+                return ResourceManager.GetString("Services.SetBrain.MissingArgument", resourceCulture);
             }
         }
         

@@ -1,6 +1,6 @@
-﻿namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
+﻿namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetBrain
 {
-    public class SetRepoCommandTestFixture : CommandTestFixture
+    public class SetBrainCommandTestFixture : CommandTestFixture
     {
         public override async Task DisposeAsync()
         {
@@ -10,7 +10,7 @@
         public override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-            Console.WriteLine($"[SetRepo] Temp Directory: {TempDirectory}");
+            Console.WriteLine($"[SetBrain] Temp Directory: {TempDirectory}");
         }
     }
 }

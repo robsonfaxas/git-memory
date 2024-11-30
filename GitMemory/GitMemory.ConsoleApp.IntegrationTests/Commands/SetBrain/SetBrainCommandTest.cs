@@ -2,25 +2,25 @@ using GitMemory.ConsoleApp.IntegrationTests.Configuration;
 using GitMemory.CultureConfig;
 using Xunit.Priority;
 
-namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
+namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetBrain
 {
     [TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
-    public class SetRepoCommandTest : IClassFixture<SetRepoCommandTestFixture>
+    public class SetBrainCommandTest : IClassFixture<SetBrainCommandTestFixture>
     {
-        private SetRepoCommandTestFixture _commandTestFixture { get; set; }
-        public SetRepoCommandTest(SetRepoCommandTestFixture commandTestFixture)
+        private SetBrainCommandTestFixture _commandTestFixture { get; set; }
+        public SetBrainCommandTest(SetBrainCommandTestFixture commandTestFixture)
         {
             _commandTestFixture = commandTestFixture;
         }
 
         [Fact, Priority(1)]
-        public async void TestSetRepoWithoutArguments_ReturnErrorMessage()
+        public async void TestSetBrainWithoutArguments_ReturnErrorMessage()
         {
             //Arrange
-            var expectedResult = ResourceMessages.Services_SetRepo_MissingArgument;
+            var expectedResult = ResourceMessages.Services_SetBrain_MissingArgument;
 
             //Act
-            await ProgramTest.MainTestAsync(new string[5]{ "set-repo",
+            await ProgramTest.MainTestAsync(new string[5]{ "set-brain",
                                                             "--GlobalSettingsFolder", _commandTestFixture.GlobalSettingsDirectory,
                                                             "--CurrentDirectory", _commandTestFixture.CurrentDirectoryFolder});
 
@@ -34,13 +34,13 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
         }
 
         [Fact, Priority(2)]
-        public async void TestSetRepo_CreatesRepo()
+        public async void TestSetBrain_CreatesRepo()
         {
             //Arrange
-            var expectedResult = ResourceMessages.Services_SetRepo_CreationSuccess;
+            var expectedResult = ResourceMessages.Services_SetBrain_CreationSuccess;
 
             //Act
-            await ProgramTest.MainTestAsync(new string[6]{ "set-repo", _commandTestFixture.RepoDirectory,
+            await ProgramTest.MainTestAsync(new string[6]{ "set-brain", _commandTestFixture.RepoDirectory,
                                                             "--GlobalSettingsFolder", _commandTestFixture.GlobalSettingsDirectory,
                                                             "--CurrentDirectory", _commandTestFixture.CurrentDirectoryFolder});
 
@@ -59,13 +59,13 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
             // Arrange
             var repoDirectory2 = Path.Combine(_commandTestFixture.TempDirectory, "repo2");
             Directory.CreateDirectory(repoDirectory2);
-            string expectedRepositoryInfo = string.Format(ResourceMessages.Handlers_SetRepo_CurrentRepoInfo, _commandTestFixture.RepoDirectory);
-            string expectedQuestion = ResourceMessages.Handlers_SetRepo_Warning;
+            string expectedRepositoryInfo = string.Format(ResourceMessages.Handlers_SetBrain_CurrentRepoInfo, _commandTestFixture.RepoDirectory);
+            string expectedQuestion = ResourceMessages.Handlers_SetBrain_Warning;
             Interactions.DialogResultRequest.Enqueue(Domain.Entities.Enums.DialogResultEnum.Yes);            
-            string expectedResult = ResourceMessages.Services_SetRepo_CreationSuccess;
+            string expectedResult = ResourceMessages.Services_SetBrain_CreationSuccess;
 
             // Act
-            await ProgramTest.MainTestAsync(new string[6] { "set-repo", repoDirectory2,
+            await ProgramTest.MainTestAsync(new string[6] { "set-brain", repoDirectory2,
                                                             "--GlobalSettingsFolder", _commandTestFixture.GlobalSettingsDirectory,
                                                             "--CurrentDirectory", _commandTestFixture.CurrentDirectoryFolder });
 
@@ -96,13 +96,13 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
             // Arrange
             var repoDirectory3 = Path.Combine(_commandTestFixture.TempDirectory, "repo3");
             Directory.CreateDirectory(repoDirectory3);
-            string expectedRepositoryInfo = string.Format(ResourceMessages.Handlers_SetRepo_CurrentRepoInfo, _commandTestFixture.RepoDirectory);
-            string expectedQuestion = ResourceMessages.Handlers_SetRepo_Warning;
+            string expectedRepositoryInfo = string.Format(ResourceMessages.Handlers_SetBrain_CurrentRepoInfo, _commandTestFixture.RepoDirectory);
+            string expectedQuestion = ResourceMessages.Handlers_SetBrain_Warning;
             Interactions.DialogResultRequest.Enqueue(Domain.Entities.Enums.DialogResultEnum.No); // User Says No            
-            string expectedResult = ResourceMessages.Handlers_SetRepo_Cancel;
+            string expectedResult = ResourceMessages.Handlers_SetBrain_Cancel;
 
             // Act
-            await ProgramTest.MainTestAsync(new string[6] { "set-repo", repoDirectory3,
+            await ProgramTest.MainTestAsync(new string[6] { "set-brain", repoDirectory3,
                                                             "--GlobalSettingsFolder", _commandTestFixture.GlobalSettingsDirectory,
                                                             "--CurrentDirectory", _commandTestFixture.CurrentDirectoryFolder });
 
@@ -130,13 +130,13 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.SetRepo
             // Arrange
             var repoDirectoryDot = ".";
             Directory.CreateDirectory(repoDirectoryDot);
-            string expectedRepositoryInfo = string.Format(ResourceMessages.Handlers_SetRepo_CurrentRepoInfo, _commandTestFixture.RepoDirectory);
-            string expectedQuestion = ResourceMessages.Handlers_SetRepo_Warning;
+            string expectedRepositoryInfo = string.Format(ResourceMessages.Handlers_SetBrain_CurrentRepoInfo, _commandTestFixture.RepoDirectory);
+            string expectedQuestion = ResourceMessages.Handlers_SetBrain_Warning;
             Interactions.DialogResultRequest.Enqueue(Domain.Entities.Enums.DialogResultEnum.Yes);            
-            string expectedResult = ResourceMessages.Services_SetRepo_CreationSuccess;
+            string expectedResult = ResourceMessages.Services_SetBrain_CreationSuccess;
 
             // Act
-            await ProgramTest.MainTestAsync(new string[6] { "set-repo", repoDirectoryDot,
+            await ProgramTest.MainTestAsync(new string[6] { "set-brain", repoDirectoryDot,
                                                             "--GlobalSettingsFolder", _commandTestFixture.GlobalSettingsDirectory,
                                                             "--CurrentDirectory", _commandTestFixture.CurrentDirectoryFolder });
 

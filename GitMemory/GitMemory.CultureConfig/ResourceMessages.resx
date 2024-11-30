@@ -150,13 +150,13 @@
   <data name="Handlers.Pick.WarningCommitsInList" xml:space="preserve">
     <value>Warning: you have commits set in your list.</value>
   </data>
-  <data name="Handlers.SetRepo.Cancel" xml:space="preserve">
+  <data name="Handlers.SetBrain.Cancel" xml:space="preserve">
     <value>No repository changes.</value>
   </data>
-  <data name="Handlers.SetRepo.CurrentRepoInfo" xml:space="preserve">
+  <data name="Handlers.SetBrain.CurrentRepoInfo" xml:space="preserve">
     <value>Current Repository Location: {0}</value>
   </data>
-  <data name="Handlers.SetRepo.Warning" xml:space="preserve">
+  <data name="Handlers.SetBrain.Warning" xml:space="preserve">
     <value>Warning: A repository is already set in another location. Do you want to overwrite the current location set?</value>
   </data>
   <data name="Repository.ErrorLog.Log.UnhandledException" xml:space="preserve">
@@ -219,16 +219,16 @@
   <data name="Services.PickByNumber.UnhandledException" xml:space="preserve">
     <value>An error occurred while attempting to retrieve commits. Please refer to the error log for more details.</value>
   </data>
-  <data name="Services.SetRepo.CreationSuccess" xml:space="preserve">
+  <data name="Services.SetBrain.CreationSuccess" xml:space="preserve">
     <value>Memories Repository created successfully.</value>
   </data>
-  <data name="Services.SetRepo.DirectoryNotFound" xml:space="preserve">
+  <data name="Services.SetBrain.DirectoryNotFound" xml:space="preserve">
     <value>Directory not found.</value>
   </data>
-  <data name="Services.SetRepo.ErrorHandlingDirectory" xml:space="preserve">
+  <data name="Services.SetBrain.ErrorHandlingDirectory" xml:space="preserve">
     <value>Error creating/reading directory in {0}</value>
   </data>
-  <data name="Services.SetRepo.MissingArgument" xml:space="preserve">
+  <data name="Services.SetBrain.MissingArgument" xml:space="preserve">
     <value>No arguments provided.</value>
   </data>
   <data name="Services.Settings.DisableErrorLogResult" xml:space="preserve">

@@ -2,11 +2,11 @@
 
 namespace GitMemory.Application.Commands
 {
-    public class SetRepoCommand : IGitCommandRequest
+    public class SetBrainCommand : IGitCommandRequest
     {
         public List<string> Parameters { get; set; } = new List<string>();
 
-        public SetRepoCommand Initialize(List<string> commands)
+        public SetBrainCommand Initialize(List<string> commands)
         {
             Parameters = commands;            
             return this;
