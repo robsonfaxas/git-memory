@@ -8,7 +8,7 @@ using MediatR;
 
 namespace GitMemory.Application.Handlers
 {
-    public class SetRepoCommandHandler : IRequestHandler<SetRepoCommand, CommandResponse>
+    public class SetRepoCommandHandler : IRequestHandler<SetRepoCommand, Command>
     {
         private readonly ISetRepoCommandService _setRepoCommandService;
         private readonly ISettingsService _settingsService;        
@@ -19,16 +19,16 @@ namespace GitMemory.Application.Handlers
             _settingsService = settingsService;
         }
 
-        public async Task<CommandResponse> Handle(SetRepoCommand request, CancellationToken cancellationToken)
+        public async Task<Command> Handle(SetRepoCommand request, CancellationToken cancellationToken)
         {
             var globalSettings = _settingsService.ReadGlobalSettings();
             if (!string.IsNullOrEmpty(globalSettings.RepositoryLocation) && 
                 !globalSettings.RepositoryLocation.Equals(request.Parameters.FirstOrDefault()))
             {
-                CommandContextAccessor.Current.InteractionWindow.Write(new CommandResponse(string.Format(ResourceMessages.Handlers_SetRepo_CurrentRepoInfo,globalSettings.RepositoryLocation), ResponseTypeEnum.Info));
-                var dialogResult = CommandContextAccessor.Current.InteractionWindow.Read(DialogButtonsEnum.YesNo, new CommandResponse(ResourceMessages.Handlers_SetRepo_Warning, ResponseTypeEnum.Warning));                
+                CommandContextAccessor.Current.InteractionWindow.Write(new Command(string.Format(ResourceMessages.Handlers_SetRepo_CurrentRepoInfo,globalSettings.RepositoryLocation), ResponseTypeEnum.Info));
+                var dialogResult = CommandContextAccessor.Current.InteractionWindow.Read(DialogButtonsEnum.YesNo, new Command(ResourceMessages.Handlers_SetRepo_Warning, ResponseTypeEnum.Warning));                
                 if (dialogResult == DialogResultEnum.No)
-                    return await Task.FromResult(new CommandResponse(ResourceMessages.Handlers_SetRepo_Cancel, ResponseTypeEnum.Info));
+                    return await Task.FromResult(new Command(ResourceMessages.Handlers_SetRepo_Cancel, ResponseTypeEnum.Info));
             }
             return await _setRepoCommandService.ExecuteCommand(request.Parameters);
         }

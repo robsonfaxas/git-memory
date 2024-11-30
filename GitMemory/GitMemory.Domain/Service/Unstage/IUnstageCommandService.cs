@@ -4,6 +4,6 @@ namespace GitMemory.Domain.Service.Unstage
 {
     public interface IUnstageCommandService
     {
-        Task<CommandResponse> ExecuteCommand(List<string> commands);
+        Task<Command> ExecuteCommand(List<string> commands);
     }
 }

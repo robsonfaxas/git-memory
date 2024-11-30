@@ -9,7 +9,7 @@ using MediatR;
 
 namespace GitMemory.Application.Handlers
 {
-    public class PickCommandHandler : IRequestHandler<PickCommand, CommandResponse>
+    public class PickCommandHandler : IRequestHandler<PickCommand, Command>
     {
         private readonly IMemoryPoolService _memoryPoolService;
         private readonly IPickCommandService _pickCommandService;
@@ -19,7 +19,7 @@ namespace GitMemory.Application.Handlers
             _pickCommandService=pickCommandService;
         }
 
-        public async Task<CommandResponse> Handle(PickCommand request, CancellationToken cancellationToken)
+        public async Task<Command> Handle(PickCommand request, CancellationToken cancellationToken)
         {
             var memoryPool = _memoryPoolService.ReadMemoryPool();
             bool clearPoolList = false;
@@ -28,13 +28,13 @@ namespace GitMemory.Application.Handlers
             {
                 if (repository.Unstaged.Any() || repository.Unstaged.Any())
                 {
-                    CommandContextAccessor.Current.InteractionWindow.Write(new CommandResponse(ResourceMessages.Handlers_Pick_WarningCommitsInList, ResponseTypeEnum.Warning));
+                    CommandContextAccessor.Current.InteractionWindow.Write(new Command(ResourceMessages.Handlers_Pick_WarningCommitsInList, ResponseTypeEnum.Warning));
                     foreach (var file in repository.Staged)
-                        CommandContextAccessor.Current.InteractionWindow.Write(new CommandResponse(string.Format(ResourceMessages.Handlers_Pick_StagedItem, file.CommitHash),ResponseTypeEnum.Info));
+                        CommandContextAccessor.Current.InteractionWindow.Write(new Command(string.Format(ResourceMessages.Handlers_Pick_StagedItem, file.CommitHash),ResponseTypeEnum.Info));
                     foreach (var file in repository.Unstaged)
-                        CommandContextAccessor.Current.InteractionWindow.Write(new CommandResponse(string.Format(ResourceMessages.Handlers_Pick_NotStagedItem, file.CommitHash), ResponseTypeEnum.Info));
+                        CommandContextAccessor.Current.InteractionWindow.Write(new Command(string.Format(ResourceMessages.Handlers_Pick_NotStagedItem, file.CommitHash), ResponseTypeEnum.Info));
 
-                    var dialogResult = CommandContextAccessor.Current.InteractionWindow.Read(DialogButtonsEnum.YesNo, new CommandResponse("\n" + ResourceMessages.Handlers_Pick_RequestClearList, ResponseTypeEnum.Warning));
+                    var dialogResult = CommandContextAccessor.Current.InteractionWindow.Read(DialogButtonsEnum.YesNo, new Command("\n" + ResourceMessages.Handlers_Pick_RequestClearList, ResponseTypeEnum.Warning));
                     clearPoolList = dialogResult == DialogResultEnum.Yes;
                 }
             }

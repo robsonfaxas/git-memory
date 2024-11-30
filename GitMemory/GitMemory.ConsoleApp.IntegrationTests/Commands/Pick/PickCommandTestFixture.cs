@@ -14,7 +14,6 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.Pick
         public override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-            await base.InitializeAsync();
             await ProgramTest.MainTestAsync(new string[6]{ "set-repo", RepoDirectory,
                                                             "--GlobalSettingsFolder", GlobalSettingsDirectory,
                                                             "--CurrentDirectory", CurrentDirectoryFolder});

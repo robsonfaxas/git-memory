@@ -5,6 +5,6 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
 {
     internal interface IPickStrategy
     {
-        Task<CommandResponse> Execute(List<string> arguments, MemoryPool memoryPool);
+        Task<Command> Execute(List<string> arguments, MemoryPool memoryPool);
     }
 }

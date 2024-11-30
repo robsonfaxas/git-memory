@@ -466,6 +466,60 @@ namespace GitMemory.CultureConfig {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Status End..
+        /// </summary>
+        public static string Services_Status_End {
+            get {
+                return ResourceManager.GetString("Services.Status.End", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No commits are tracked..
+        /// </summary>
+        public static string Services_Status_NoCommits {
+            get {
+                return ResourceManager.GetString("Services.Status.NoCommits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Staged commits:.
+        /// </summary>
+        public static string Services_Status_StagedHeader {
+            get {
+                return ResourceManager.GetString("Services.Status.StagedHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \t - {0} - {1}.
+        /// </summary>
+        public static string Services_Status_StagedItem {
+            get {
+                return ResourceManager.GetString("Services.Status.StagedItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unstaged commits:.
+        /// </summary>
+        public static string Services_Status_UnstagedHeader {
+            get {
+                return ResourceManager.GetString("Services.Status.UnstagedHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \t - {0} - {1}.
+        /// </summary>
+        public static string Services_Status_UnstagedItem {
+            get {
+                return ResourceManager.GetString("Services.Status.UnstagedItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No arguments provided..
         /// </summary>
         public static string Services_Unpick_MissingArgument {

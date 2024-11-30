@@ -8,7 +8,7 @@ using MediatR;
 
 namespace GitMemory.Application.Handlers
 {
-    public class ErrorLogCommandHandler : IRequestHandler<ErrorLogCommand, CommandResponse>
+    public class ErrorLogCommandHandler : IRequestHandler<ErrorLogCommand, Command>
     {
         private readonly ISettingsService _settingsService;        
 
@@ -17,7 +17,7 @@ namespace GitMemory.Application.Handlers
             _settingsService = settingsService;
         }
 
-        public async Task<CommandResponse> Handle(ErrorLogCommand request, CancellationToken cancellationToken)
+        public async Task<Command> Handle(ErrorLogCommand request, CancellationToken cancellationToken)
         {
             if (request.Parameters is not null && !String.IsNullOrEmpty(request.Parameters.FirstOrDefault())
                 && request.Parameters.Count > 0)
@@ -32,11 +32,11 @@ namespace GitMemory.Application.Handlers
                     return await _settingsService.DisableErrorLogs();                    
                 }
                 else
-                    return await Task.FromResult(new CommandResponse(string.Format(ResourceMessages.Handlers_ErrorLog_InvalidParameter, request.Parameters.FirstOrDefault()), ResponseTypeEnum.Error));
+                    return await Task.FromResult(new Command(string.Format(ResourceMessages.Handlers_ErrorLog_InvalidParameter, request.Parameters.FirstOrDefault()), ResponseTypeEnum.Error));
             }
             
             var errorLogStatus = _settingsService.ReadGlobalSettings().IsErrorLogsEnabled ? "ENABLED" : "DISABLED";            
-            return await Task.FromResult(new CommandResponse(string.Format(ResourceMessages.Handlers_ErrorLog_StatusMessage, errorLogStatus), ResponseTypeEnum.Info));
+            return await Task.FromResult(new Command(string.Format(ResourceMessages.Handlers_ErrorLog_StatusMessage, errorLogStatus), ResponseTypeEnum.Info));
         }
     }
 }

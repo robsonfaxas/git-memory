@@ -4,6 +4,6 @@ namespace GitMemory.Domain.Service.SetRepo
 {
     public interface ISetRepoCommandService
     {
-        Task<CommandResponse> ExecuteCommand(List<string> commands);
+        Task<Command> ExecuteCommand(List<string> commands);
     }
 }

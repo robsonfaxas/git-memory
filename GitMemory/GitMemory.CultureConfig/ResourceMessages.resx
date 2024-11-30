@@ -252,6 +252,24 @@
   <data name="Services.Stage.SuccessZeroCommits" xml:space="preserve">
     <value>No commits were staged.</value>
   </data>
+  <data name="Services.Status.End" xml:space="preserve">
+    <value>Status End.</value>
+  </data>
+  <data name="Services.Status.NoCommits" xml:space="preserve">
+    <value>No commits are tracked.</value>
+  </data>
+  <data name="Services.Status.StagedHeader" xml:space="preserve">
+    <value>Staged commits:</value>
+  </data>
+  <data name="Services.Status.StagedItem" xml:space="preserve">
+    <value>\t - {0} - {1}</value>
+  </data>
+  <data name="Services.Status.UnstagedHeader" xml:space="preserve">
+    <value>Unstaged commits:</value>
+  </data>
+  <data name="Services.Status.UnstagedItem" xml:space="preserve">
+    <value>\t - {0} - {1}</value>
+  </data>
   <data name="Services.Unpick.MissingArgument" xml:space="preserve">
     <value>No arguments provided.</value>
   </data>

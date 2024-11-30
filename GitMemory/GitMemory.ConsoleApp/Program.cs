@@ -29,6 +29,7 @@ public class Program
                 services.AddTransient<PickCommand>();
                 services.AddTransient<UnpickCommand>();
                 services.AddTransient<ErrorLogCommand>();
+                services.AddTransient<StatusCommand>();
                 services.AddScoped<CommandContextConfiguration>();
                 services.AddTransient<IGitCommandFactory, GitCommandFactory>();
                 services.AddApplicationServices();

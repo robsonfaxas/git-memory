@@ -5,6 +5,6 @@ namespace GitMemory.Infrastructure.CommandsServices.Unpick.UnpickStrategy
 {
     internal interface IUnpickStrategy
     {
-        Task<CommandResponse> Execute(List<string> arguments, MemoryPool memoryPool);
+        Task<Command> Execute(List<string> arguments, MemoryPool memoryPool);
     }
 }

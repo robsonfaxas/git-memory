@@ -44,29 +44,29 @@ namespace GitMemory.Infrastructure.CommandsServices
         {
             return _globalSettingsRepository.GetGlobalSettingsFilePath();
         }
-        public Task<CommandResponse> EnableErrorLogs()
+        public Task<Command> EnableErrorLogs()
         {
             try
             {
                 WriteGlobalSettingsValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ErrorLogItemKey, "TRUE", "");
-                return Task.FromResult(new CommandResponse(ResourceMessages.Services_Settings_EnableErrorLogResult, ResponseTypeEnum.Info));
+                return Task.FromResult(new Command(ResourceMessages.Services_Settings_EnableErrorLogResult, ResponseTypeEnum.Info));
             }
             catch {
-                return Task.FromResult(new CommandResponse("EnableErrorLogs: Unable to enable error logs", ResponseTypeEnum.Error));
+                return Task.FromResult(new Command("EnableErrorLogs: Unable to enable error logs", ResponseTypeEnum.Error));
             }
         }
 
 
-        public Task<CommandResponse> DisableErrorLogs()
+        public Task<Command> DisableErrorLogs()
         {
             try
             {
                 WriteGlobalSettingsValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ErrorLogItemKey, "FALSE", "");
-                return Task.FromResult(new CommandResponse(ResourceMessages.Services_Settings_DisableErrorLogResult, ResponseTypeEnum.Info));
+                return Task.FromResult(new Command(ResourceMessages.Services_Settings_DisableErrorLogResult, ResponseTypeEnum.Info));
             }
             catch
             {
-                return Task.FromResult(new CommandResponse("EnableErrorLogs: Unable to disable error logs", ResponseTypeEnum.Error));
+                return Task.FromResult(new Command("EnableErrorLogs: Unable to disable error logs", ResponseTypeEnum.Error));
             }
             
         }
