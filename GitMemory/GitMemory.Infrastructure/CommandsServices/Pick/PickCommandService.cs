@@ -18,12 +18,12 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick
             _errorLogService = errorLogService;
         }
 
-        public Task<CommandResponse> ExecuteCommand(List<string> commands, bool clearPoolList)
+        public Task<Command> ExecuteCommand(List<string> commands, bool clearPoolList)
         {
             try
             {
                 if (commands == null || commands.Count == 0)
-                    return Task.FromResult(new CommandResponse(ResourceMessages.Services_Pick_MissingArgument, ResponseTypeEnum.Error));
+                    return Task.FromResult(new Command(ResourceMessages.Services_Pick_MissingArgument, ResponseTypeEnum.Error));
                 var memoryPool = _memoryPoolService.ReadMemoryPool() ?? new MemoryPool();
                 if (clearPoolList)
                     memoryPool = ClearPoolList(memoryPool);
@@ -33,7 +33,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
+                return Task.FromResult(new Command(ex.Message, ResponseTypeEnum.Error));
             }
         }
 

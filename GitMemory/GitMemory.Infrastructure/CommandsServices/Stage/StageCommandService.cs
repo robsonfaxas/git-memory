@@ -15,12 +15,12 @@ namespace GitMemory.Infrastructure.CommandsServices.Stage
             this._memoryPoolService=memoryPoolService;
         }
 
-        public Task<CommandResponse> ExecuteCommand(List<string> commands)
+        public Task<Command> ExecuteCommand(List<string> commands)
         {
             try
             {
                 if (commands == null || commands.Count == 0)
-                    return Task.FromResult(new CommandResponse(ResourceMessages.Services_Stage_MissingArguments, ResponseTypeEnum.Error));
+                    return Task.FromResult(new Command(ResourceMessages.Services_Stage_MissingArguments, ResponseTypeEnum.Error));
                 var memoryPool = _memoryPoolService.ReadMemoryPool();
                 string repoPath = Repository.Discover(CommandContextAccessor.Current.CurrentDirectory);
                 int totalStaged = 0;
@@ -37,7 +37,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Stage
                                     repository.Staged.Add(unstaged);
                                     repository.Unstaged.Remove(unstaged);
                                     CommandContextAccessor.Current.InteractionWindow
-                                        .Write(new CommandResponse(string.Format(ResourceMessages.Services_Stage_StagedCommit, unstaged.CommitHash)));
+                                        .Write(new Command(string.Format(ResourceMessages.Services_Stage_StagedCommit, unstaged.CommitHash)));
                                     totalStaged++;
                                 }
                             }
@@ -51,27 +51,27 @@ namespace GitMemory.Infrastructure.CommandsServices.Stage
                                 repository.Staged.Add(commit);
                                 repository.Unstaged.Remove(commit);
                                 CommandContextAccessor.Current.InteractionWindow
-                                    .Write(new CommandResponse(string.Format(ResourceMessages.Services_Stage_StagedCommit, command)));
+                                    .Write(new Command(string.Format(ResourceMessages.Services_Stage_StagedCommit, command)));
                                 totalStaged++;
                             }                               
                         }
                         else if (!repository.Staged.Select(p => p.CommitHash.ToLower()).Contains(command.ToLower()))
                         {
                             CommandContextAccessor.Current.InteractionWindow
-                                .Write(new CommandResponse(string.Format(ResourceMessages.Services_Stage_InvalidHash, command), ResponseTypeEnum.Error));
+                                .Write(new Command(string.Format(ResourceMessages.Services_Stage_InvalidHash, command), ResponseTypeEnum.Error));
                         }
                     }
                 }
                 _memoryPoolService.WriteMemoryPool(memoryPool);
                 if (totalStaged > 0)
                 {
-                    return Task.FromResult(new CommandResponse(ResourceMessages.Services_Stage_Success));
+                    return Task.FromResult(new Command(ResourceMessages.Services_Stage_Success));
                 }
-                return Task.FromResult(new CommandResponse(ResourceMessages.Services_Stage_SuccessZeroCommits));
+                return Task.FromResult(new Command(ResourceMessages.Services_Stage_SuccessZeroCommits));
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
+                return Task.FromResult(new Command(ex.Message, ResponseTypeEnum.Error));
             }
         }
     }

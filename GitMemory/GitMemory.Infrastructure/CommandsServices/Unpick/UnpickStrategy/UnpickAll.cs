@@ -17,7 +17,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Unpick.UnpickStrategy
             _errorLogService = errorLogService;
         }
         
-        public Task<CommandResponse> Execute(List<string> arguments, MemoryPool memoryPool)
+        public Task<Command> Execute(List<string> arguments, MemoryPool memoryPool)
         {
             try
             {
@@ -33,16 +33,16 @@ namespace GitMemory.Infrastructure.CommandsServices.Unpick.UnpickStrategy
                     repository.Unstaged.Clear();
                 }
                 _memoryPoolService.WriteMemoryPool(memoryPool);
-                return Task.FromResult(new CommandResponse(ResourceMessages.Services_UnpickAll_Success, ResponseTypeEnum.Info));
+                return Task.FromResult(new Command(ResourceMessages.Services_UnpickAll_Success, ResponseTypeEnum.Info));
             }
             catch (ArgumentException ex)
             {
-                return Task.FromResult(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
+                return Task.FromResult(new Command(ex.Message, ResponseTypeEnum.Error));
             }
             catch (Exception ex)
             {
                 _errorLogService.Log(ex);
-                return Task.FromResult(new CommandResponse(ResourceMessages.Services_UnpickAll_UnhandledException, ResponseTypeEnum.Error));
+                return Task.FromResult(new Command(ResourceMessages.Services_UnpickAll_UnhandledException, ResponseTypeEnum.Error));
             }
                 
         }

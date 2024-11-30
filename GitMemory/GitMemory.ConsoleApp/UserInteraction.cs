@@ -9,8 +9,9 @@ namespace GitMemory.ConsoleApp
     {
         public string Title { get; set; } = string.Empty;
 
-        public void Write(CommandResponse command)
+        public void Write(Command command)
         {
+            Console.ForegroundColor = command.ResponseColor;
             switch (command.ResponseType)
             {
                 case ResponseTypeEnum.Info:
@@ -27,9 +28,9 @@ namespace GitMemory.ConsoleApp
             }
         }
 
-        public DialogResultEnum Read(DialogButtonsEnum buttons, CommandResponse command)
+        public DialogResultEnum Read(DialogButtonsEnum buttons, Command command)
         {
-            Func<CommandResponse, DialogResultEnum> Answer = buttons switch
+            Func<Command, DialogResultEnum> Answer = buttons switch
             {
                 DialogButtonsEnum.Ok => OkControl,
                 DialogButtonsEnum.OkCancel => OkCancelControl,
@@ -70,7 +71,7 @@ namespace GitMemory.ConsoleApp
             return Console.ReadLine() ?? "";
         }
 
-        private DialogResultEnum OkCancelControl(CommandResponse response)
+        private DialogResultEnum OkCancelControl(Command response)
         {
             if (response is not null && !string.IsNullOrEmpty(response.Message))
             {
@@ -86,7 +87,7 @@ namespace GitMemory.ConsoleApp
             return DialogResultEnum.Cancel;
         }
 
-        private DialogResultEnum YesNoControl(CommandResponse response)
+        private DialogResultEnum YesNoControl(Command response)
         {
             if (response is not null && !string.IsNullOrEmpty(response.Message))
             {
@@ -103,14 +104,14 @@ namespace GitMemory.ConsoleApp
                     else if (answer.ToUpper().Equals("N"))
                         return DialogResultEnum.No;
                     else
-                        Write(new CommandResponse(ResourceMessages.UserInteraction_YesNo_Invalid, ResponseTypeEnum.Info));
+                        Write(new Command(ResourceMessages.UserInteraction_YesNo_Invalid, ResponseTypeEnum.Info));
 
             } while (answer == null || !(answer != null && (answer.ToUpper().Equals("Y") || answer.ToUpper().Equals("N"))));
 
             return DialogResultEnum.No;
         }
 
-        private DialogResultEnum YesNoCancelControl(CommandResponse response)
+        private DialogResultEnum YesNoCancelControl(Command response)
         {
             if (response is not null && !string.IsNullOrEmpty(response.Message))
             {
@@ -126,7 +127,7 @@ namespace GitMemory.ConsoleApp
             return DialogResultEnum.Cancel;
         }
 
-        private DialogResultEnum OkControl(CommandResponse response)
+        private DialogResultEnum OkControl(Command response)
         {
             if (response is not null && !string.IsNullOrEmpty(response.Message))
                 Write(response);

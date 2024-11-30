@@ -16,7 +16,7 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Configuration
                 throw new Exception("No inputs were configured for this test. Please, in \"Arrange\" section of this xunit test, add the expected user inputs for this test.");
         }
 
-        public DialogResultEnum Read(DialogButtonsEnum buttons, CommandResponse command)
+        public DialogResultEnum Read(DialogButtonsEnum buttons, Command command)
         {
             if (Interactions.DialogResultRequest.Any())
             {
@@ -27,7 +27,7 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Configuration
                 throw new Exception("No inputs were configured for this test. Please, in \"Arrange\" section of this xunit test, add the expected dialog user inputs for this test.");            
         }
 
-        public void Write(CommandResponse command)
+        public void Write(Command command)
         {
             Interactions.Output.Enqueue(command);
         }

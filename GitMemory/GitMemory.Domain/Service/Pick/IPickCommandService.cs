@@ -4,6 +4,6 @@ namespace GitMemory.Domain.Service.Pick
 {
     public interface IPickCommandService
     {
-        Task<CommandResponse> ExecuteCommand(List<string> commands, bool clear);
+        Task<Command> ExecuteCommand(List<string> commands, bool clear);
     }
 }

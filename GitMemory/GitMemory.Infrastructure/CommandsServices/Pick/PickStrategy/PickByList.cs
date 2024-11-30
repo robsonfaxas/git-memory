@@ -21,7 +21,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
         //                  saying it was not found for the current git repository
         //                check the dates and add them to the unstaged list (don't add duplicates, check both lits) following the dates order
         //                write the file
-        public Task<CommandResponse> Execute(List<string> hashes, MemoryPool memoryPool)
+        public Task<Command> Execute(List<string> hashes, MemoryPool memoryPool)
         {
             try
             {
@@ -45,17 +45,17 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
                     
                 }
                 _memoryPoolService.WriteMemoryPool(memoryPool);
-                return Task.FromResult(new CommandResponse(ResourceMessages.Services_Pick_Success, ResponseTypeEnum.Info));
+                return Task.FromResult(new Command(ResourceMessages.Services_Pick_Success, ResponseTypeEnum.Info));
             }
             catch (ArgumentException ex)
             {
                 _errorLogService.Log(ex);
-                return Task.FromResult(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
+                return Task.FromResult(new Command(ex.Message, ResponseTypeEnum.Error));
             }
             catch (Exception ex)
             {
                 _errorLogService.Log(ex);
-                return Task.FromResult(new CommandResponse(ResourceMessages.Services_PickByList_UnhandledException, ResponseTypeEnum.Error));
+                return Task.FromResult(new Command(ResourceMessages.Services_PickByList_UnhandledException, ResponseTypeEnum.Error));
             }
                 
         }
@@ -90,7 +90,8 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
                 var memoryCommit = new MemoryCommit()
                 {
                     CommitDate = commit?.Author?.When.DateTime ?? default,
-                    CommitHash = commit?.Sha ?? default!
+                    CommitHash = commit?.Sha ?? default!,
+                    CommitDescription = commit?.Message ?? default!
                 };
                 return memoryCommit;
             }

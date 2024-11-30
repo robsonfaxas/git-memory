@@ -6,8 +6,8 @@ namespace GitMemory.Domain.UI
     public interface IInteractionWindow
     {
         string Title { get; set; }
-        void Write(CommandResponse command);
+        void Write(Command command);
         string Read();
-        DialogResultEnum Read(DialogButtonsEnum buttons, CommandResponse command);
+        DialogResultEnum Read(DialogButtonsEnum buttons, Command command);
     }
 }

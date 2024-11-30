@@ -16,6 +16,6 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Configuration
     {
         public static Queue<string> StringRequest { get; set; } = new Queue<string>();
         public static Queue<DialogResultEnum> DialogResultRequest { get; set; } = new Queue<DialogResultEnum>();
-        public static Queue<CommandResponse> Output { get; set; } = new Queue<CommandResponse>();
+        public static Queue<Command> Output { get; set; } = new Queue<Command>();
     }
 }

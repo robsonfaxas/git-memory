@@ -6,7 +6,7 @@ using MediatR;
 
 namespace GitMemory.Application.Handlers
 {
-    public class UnpickCommandHandler : IRequestHandler<UnpickCommand, CommandResponse>
+    public class UnpickCommandHandler : IRequestHandler<UnpickCommand, Command>
     {
         private readonly IMemoryPoolService _memoryPoolService;
         private readonly IUnpickCommandService _unpickCommandService;
@@ -16,7 +16,7 @@ namespace GitMemory.Application.Handlers
             _unpickCommandService = unpickCommandService;
         }
 
-        public async Task<CommandResponse> Handle(UnpickCommand request, CancellationToken cancellationToken)
+        public async Task<Command> Handle(UnpickCommand request, CancellationToken cancellationToken)
         {
             return await _unpickCommandService.ExecuteCommand(request.Parameters);
         }

@@ -18,12 +18,12 @@ namespace GitMemory.Infrastructure.CommandsServices.Unpick
             _errorLogService = errorLogService;
         }
 
-        public Task<CommandResponse> ExecuteCommand(List<string> commands)
+        public Task<Command> ExecuteCommand(List<string> commands)
         {
             try
             {
                 if (commands == null || commands.Count == 0)
-                    return Task.FromResult(new CommandResponse(ResourceMessages.Services_Unpick_MissingArgument, ResponseTypeEnum.Error));
+                    return Task.FromResult(new Command(ResourceMessages.Services_Unpick_MissingArgument, ResponseTypeEnum.Error));
                 var memoryPool = _memoryPoolService.ReadMemoryPool() ?? new MemoryPool();
                 if (commands.FirstOrDefault()!.Equals(".") || commands.FirstOrDefault()!.ToLower().Equals("--all"))
                     _pickStrategy = new UnpickAll(_memoryPoolService, _errorLogService);
@@ -33,7 +33,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Unpick
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
+                return Task.FromResult(new Command(ex.Message, ResponseTypeEnum.Error));
             }
         }       
     }

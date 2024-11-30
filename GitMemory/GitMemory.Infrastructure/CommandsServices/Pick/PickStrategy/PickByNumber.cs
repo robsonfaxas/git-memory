@@ -16,7 +16,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
             _memoryPoolService = memoryPoolService;
             _errorLogService = errorLogService;
         }
-        public Task<CommandResponse> Execute(List<string> values, MemoryPool memoryPool)
+        public Task<Command> Execute(List<string> values, MemoryPool memoryPool)
         {
             var hashes = new List<string>();
             try
@@ -28,16 +28,16 @@ namespace GitMemory.Infrastructure.CommandsServices.Pick.PickStrategy
             }
             catch (ArgumentException ex)
             {
-                return Task.FromResult(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
+                return Task.FromResult(new Command(ex.Message, ResponseTypeEnum.Error));
             }
             catch (InvalidOperationException ex)
             {
-                return Task.FromResult(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
+                return Task.FromResult(new Command(ex.Message, ResponseTypeEnum.Error));
             }
             catch (Exception ex)
             {
                 _errorLogService.Log(ex);
-                return Task.FromResult(new CommandResponse(ResourceMessages.Services_PickByNumber_UnhandledException, ResponseTypeEnum.Error));
+                return Task.FromResult(new Command(ResourceMessages.Services_PickByNumber_UnhandledException, ResponseTypeEnum.Error));
             }
             return new PickByList(_memoryPoolService, _errorLogService).Execute(hashes, memoryPool);
         }

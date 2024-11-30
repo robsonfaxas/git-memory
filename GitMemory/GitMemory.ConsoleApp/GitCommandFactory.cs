@@ -33,6 +33,9 @@ namespace GitMemory.ConsoleApp
                 case "stage":
                     return _serviceProvider.GetRequiredService<StageCommand>()
                         .Initialize(parameters);
+                case "status":
+                    return _serviceProvider.GetRequiredService<StatusCommand>()
+                        .Initialize(parameters);
                 case "unstage":
                     return _serviceProvider.GetRequiredService<UnstageCommand>()
                         .Initialize(parameters);

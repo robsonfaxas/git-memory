@@ -17,7 +17,7 @@ namespace GitMemory.Infrastructure.CommandsServices.Unpick.UnpickStrategy
             _errorLogService = errorLogRepository;
         }
 
-        public Task<CommandResponse> Execute(List<string> hashes, MemoryPool memoryPool)
+        public Task<Command> Execute(List<string> hashes, MemoryPool memoryPool)
         {
             try
             {
@@ -32,16 +32,16 @@ namespace GitMemory.Infrastructure.CommandsServices.Unpick.UnpickStrategy
                         RemoveIfExists(repository.Unstaged, repository.Staged, hash);
                 
                 _memoryPoolService.WriteMemoryPool(memoryPool);
-                return Task.FromResult(new CommandResponse(ResourceMessages.Services_Unpick_Success, ResponseTypeEnum.Info));
+                return Task.FromResult(new Command(ResourceMessages.Services_Unpick_Success, ResponseTypeEnum.Info));
             }
             catch (ArgumentException ex)
             {
-                return Task.FromResult(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
+                return Task.FromResult(new Command(ex.Message, ResponseTypeEnum.Error));
             }
             catch (Exception ex)
             {
                 _errorLogService.Log(ex);
-                return Task.FromResult(new CommandResponse(ResourceMessages.Services_UnpickByList_UnhandledException, ResponseTypeEnum.Error));
+                return Task.FromResult(new Command(ResourceMessages.Services_UnpickByList_UnhandledException, ResponseTypeEnum.Error));
             }
                 
         }

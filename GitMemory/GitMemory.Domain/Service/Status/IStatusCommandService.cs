@@ -1,8 +1,8 @@
 ﻿using GitMemory.Domain.Entities;
 
-namespace GitMemory.Domain.Service.Unpick
+namespace GitMemory.Domain.Service.Status
 {
-    public interface IUnpickCommandService
+    public interface IStatusCommandService
     {
         Task<Command> ExecuteCommand(List<string> commands);
     }

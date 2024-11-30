@@ -6,7 +6,7 @@ using MediatR;
 
 namespace GitMemory.Application.Handlers
 {
-    public class UnstageCommandHandler : IRequestHandler<UnstageCommand, CommandResponse>
+    public class UnstageCommandHandler : IRequestHandler<UnstageCommand, Command>
     {
         private readonly IUnstageCommandService _unstageService;
         private readonly IMemoryPoolService _memoryPoolService;
@@ -16,7 +16,7 @@ namespace GitMemory.Application.Handlers
             _memoryPoolService = memoryPoolService;
         }
 
-        public async Task<CommandResponse> Handle(UnstageCommand request, CancellationToken cancellationToken)
+        public async Task<Command> Handle(UnstageCommand request, CancellationToken cancellationToken)
         {
             return await _unstageService.ExecuteCommand(request.Parameters);
         }

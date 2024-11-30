@@ -21,12 +21,12 @@ namespace GitMemory.Infrastructure.CommandsServices.SetRepo
         /// </summary>
         /// <param name="commands"> expects 1 argument for the set-repo command </param>
         /// <returns>Always the completion of the tasks. All errors are displayed to the terminal</returns>
-        public Task<CommandResponse> ExecuteCommand(List<string> commands)
+        public Task<Command> ExecuteCommand(List<string> commands)
         {
             try
             {
                 if (commands == null || commands.Count == 0)
-                    return Task.FromResult(new CommandResponse(ResourceMessages.Services_SetRepo_MissingArgument, ResponseTypeEnum.Error));
+                    return Task.FromResult(new Command(ResourceMessages.Services_SetRepo_MissingArgument, ResponseTypeEnum.Error));
                 string repositoryFolder = "";
                 if (commands.First().Equals("."))
                     repositoryFolder = CommandContextAccessor.Current.CurrentDirectory;
@@ -43,17 +43,17 @@ namespace GitMemory.Infrastructure.CommandsServices.SetRepo
                         _settingsService.WriteValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.RepositoryLocationItemKey, repositoryFolder, "");
                         _settingsService.WriteValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ConfigurationFileLocationItemKey, configurationJsonFile.FullName, "");
                         _settingsService.WriteValue(GlobalSettingsSections.UserSectionKey, GlobalSettingsItems.ErrorLogItemKey, "FALSE", "");
-                        return Task.FromResult(new CommandResponse(ResourceMessages.Services_SetRepo_CreationSuccess));
+                        return Task.FromResult(new Command(ResourceMessages.Services_SetRepo_CreationSuccess));
                     }
                     else
-                        return Task.FromResult(new CommandResponse(string.Format(ResourceMessages.Services_SetRepo_ErrorHandlingDirectory, repositoryFolder), ResponseTypeEnum.Error));
+                        return Task.FromResult(new Command(string.Format(ResourceMessages.Services_SetRepo_ErrorHandlingDirectory, repositoryFolder), ResponseTypeEnum.Error));
                 }
                 else
-                    return Task.FromResult(new CommandResponse(ResourceMessages.Services_SetRepo_DirectoryNotFound, ResponseTypeEnum.Error));
+                    return Task.FromResult(new Command(ResourceMessages.Services_SetRepo_DirectoryNotFound, ResponseTypeEnum.Error));
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
+                return Task.FromResult(new Command(ex.Message, ResponseTypeEnum.Error));
             }
         }
     }

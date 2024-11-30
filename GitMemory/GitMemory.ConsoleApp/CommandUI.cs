@@ -39,13 +39,13 @@ namespace GitMemory.ConsoleApp
             }
             catch (ArgumentException ex)
             {
-                _interactionWindow.Write(new CommandResponse(ex.Message, ResponseTypeEnum.Error));
+                _interactionWindow.Write(new Command(ex.Message, ResponseTypeEnum.Error));
             }
         }
 
         private IGitCommandRequest ParseRequest()
         {
-            if (Args.Count >= 1)
+            if (Args.Count >= 0)
             {
                 // Using the factory to get the appropriate command
                 return _commandFactory.GetCommand(Args.First(), Args.Skip(1).ToList());
