@@ -1,8 +1,8 @@
 ﻿using GitMemory.Domain.Entities;
 
-namespace GitMemory.Domain.Service.SetRepo
+namespace GitMemory.Domain.Service.SetBrain
 {
-    public interface ISetRepoCommandService
+    public interface ISetBrainCommandService
     {
         Task<Command> ExecuteCommand(List<string> commands);
     }

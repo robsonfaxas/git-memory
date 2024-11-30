@@ -15,7 +15,7 @@ namespace GitMemory.ConsoleApp.IntegrationTests.Commands.Unpick
         public override async Task InitializeAsync()
         {
             await base.InitializeAsync();            
-            await ProgramTest.MainTestAsync(new string[6]{ "set-repo", RepoDirectory,
+            await ProgramTest.MainTestAsync(new string[6]{ "set-brain", RepoDirectory,
                                                             "--GlobalSettingsFolder", GlobalSettingsDirectory,
                                                             "--CurrentDirectory", CurrentDirectoryFolder});
             await PickDefaultCommitsAsync();

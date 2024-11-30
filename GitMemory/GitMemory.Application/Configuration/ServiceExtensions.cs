@@ -4,14 +4,14 @@ using GitMemory.Domain.Entities;
 using GitMemory.Domain.Repositories;
 using GitMemory.Domain.Service;
 using GitMemory.Domain.Service.Pick;
-using GitMemory.Domain.Service.SetRepo;
+using GitMemory.Domain.Service.SetBrain;
 using GitMemory.Domain.Service.Stage;
 using GitMemory.Domain.Service.Status;
 using GitMemory.Domain.Service.Unpick;
 using GitMemory.Domain.Service.Unstage;
 using GitMemory.Infrastructure.CommandsServices;
 using GitMemory.Infrastructure.CommandsServices.Pick;
-using GitMemory.Infrastructure.CommandsServices.SetRepo;
+using GitMemory.Infrastructure.CommandsServices.SetBrain;
 using GitMemory.Infrastructure.CommandsServices.Stage;
 using GitMemory.Infrastructure.CommandsServices.Status;
 using GitMemory.Infrastructure.CommandsServices.Unpick;
@@ -27,7 +27,7 @@ namespace GitMemory.Application.Configuration
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddScoped<IRequestHandler<SetRepoCommand, Command>, SetRepoCommandHandler>();
+            services.AddScoped<IRequestHandler<SetBrainCommand, Command>, SetBrainCommandHandler>();
             services.AddScoped<IRequestHandler<PickCommand, Command>, PickCommandHandler>();
             services.AddScoped<IRequestHandler<UnpickCommand, Command>, UnpickCommandHandler>();
             services.AddScoped<IRequestHandler<ErrorLogCommand, Command>, ErrorLogCommandHandler>();
@@ -36,7 +36,7 @@ namespace GitMemory.Application.Configuration
             services.AddScoped<IRequestHandler<StageCommand, Command>, StageCommandHandler>();
             services.AddScoped<IPickCommandService, PickCommandService>();
             services.AddScoped<IUnpickCommandService, UnpickCommandService>();
-            services.AddScoped<ISetRepoCommandService, SetRepoCommandService>();
+            services.AddScoped<ISetBrainCommandService, SetBrainCommandService>();
             services.AddScoped<IGitMemoryGlobalSettings, GitMemoryGlobalSettings>();
             services.AddScoped<IStageCommandService, StageCommandService>();
             services.AddScoped<IUnstageCommandService, UnstageCommandService>();

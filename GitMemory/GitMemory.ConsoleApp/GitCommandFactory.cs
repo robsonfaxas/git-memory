@@ -18,8 +18,8 @@ namespace GitMemory.ConsoleApp
         {
             switch (commandName.ToLower())
             {
-                case "set-repo":
-                    return _serviceProvider.GetRequiredService<SetRepoCommand>()
+                case "set-brain":
+                    return _serviceProvider.GetRequiredService<SetBrainCommand>()
                         .Initialize(parameters);
                 case "pick":
                     return _serviceProvider.GetRequiredService<PickCommand>()
